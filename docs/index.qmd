@@ -1,0 +1,22 @@
+---
+title: ""
+author: "Jos van der Ent"
+format: html
+---
+
+# Project Description
+
+# Import
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+read_csv(here::here("data/raw/trips.csv"))
+read_csv(here::here("data/raw/trucks.csv"))
+```
+
+# ideas
+[] check weather data
+[] day and night time
