@@ -1,12 +1,18 @@
 ---
-title: ""
+title: "Faecal sludge analysis"
 author: "Jos van der Ent"
 format: html
 ---
 
 # Project Description
+## introduction
+describe which sources
+add a thesis or goal of analysis
 
-# Import
+# Exploring data
+## Import
+source: https://openwashdata.github.io/fslogisticskampala/
+license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md 
 
 ```{r}
 library(tidyverse)
@@ -16,7 +22,17 @@ library(tidyverse)
 read_csv(here::here("data/raw/trips.csv"))
 read_csv(here::here("data/raw/trucks.csv"))
 ```
+## Display data
+
+## show data pipeline
+
+# Analysis
+
+
+#conclusions
 
 # ideas
 [] check weather data
 [] day and night time
+[] plot on a map
+
