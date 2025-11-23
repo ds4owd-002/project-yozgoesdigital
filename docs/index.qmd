@@ -1,38 +1,56 @@
 ---
-title: "Faecal sludge analysis"
+title: "Faecal sludge truck logistics analysis in Kampala, Uganda"
+subtitle: "An exploration to understand the structure and trends of an informal sector" 
 author: "Jos van der Ent"
 format: html
 ---
 
 # Project Description
-## introduction
-describe which sources
-add a thesis or goal of analysis
+
+## Introduction
+
+describe which sources add a thesis or goal of analysis
 
 # Exploring data
-## Import
-source: https://openwashdata.github.io/fslogisticskampala/
-license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md 
+
+## Import libraries
 
 ```{r}
 library(tidyverse)
 ```
 
+#TODO: libraries likely needed later: dplyr knitr table library (which?) Geo or mapping library tidyr?
+
+## Import raw data
+
 ```{r}
-read_csv(here::here("data/raw/trips.csv"))
-read_csv(here::here("data/raw/trucks.csv"))
+trips <- read_csv(here::here("data/raw/trips.csv"))
 ```
+
+```{r}
+head(trips, 4)
+```
+
+```{r}
+trucks <- read_csv(here::here("data/raw/trucks.csv"))
+```
+
+```{r}
+head(trucks, 4)
+```
+
+source: https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md
+
 ## Display data
 
 ## show data pipeline
 
 # Analysis
 
-
-#conclusions
+# conclusions
 
 # ideas
-[] check weather data
-[] day and night time
-[] plot on a map
 
+[\] check weather data 
+[\] day and night time 
+[\] plot on a map
