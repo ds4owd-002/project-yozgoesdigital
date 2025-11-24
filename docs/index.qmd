@@ -9,6 +9,7 @@ format:
     toc: true
     code-fold: true
     code-folding: true
+bibliography: references.bib
 ---
 
 # Project Description
@@ -45,7 +46,10 @@ trucks <- read_csv(here::here("data/raw/trucks.csv"))
 head(trucks, 4)
 ```
 
-source: https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md
+source: 
+\#todo fix citations
+
+https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md
 
 ## Display data
 
@@ -54,6 +58,9 @@ source: https://openwashdata.github.io/fslogisticskampala/ license: https://gith
 # Analysis
 
 # conclusions
+
+# References
+
 
 # ideas
 
