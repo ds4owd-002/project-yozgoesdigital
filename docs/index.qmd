@@ -1,8 +1,14 @@
 ---
 title: "Faecal sludge truck logistics analysis in Kampala, Uganda"
 subtitle: "An exploration to understand the structure and trends of an informal sector" 
-author: "Jos van der Ent"
-format: html
+author:
+  name: "Jos van der Ent"
+date: 18-12-2025
+format: 
+  html: 
+    toc: true
+    code-fold: true
+    code-folding: true
 ---
 
 # Project Description
