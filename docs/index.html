@@ -57,7 +57,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="index_files/libs/clipboard/clipboard.min.js"></script>
@@ -233,7 +253,7 @@ dbl (1): volume
 4 UAN 087N        36</code></pre>
 </div>
 </div>
-<p>source: @{Data on faecal sludge}</p>
+<p>source: #todo fix citations <span class="citation" data-cites="lars_schobitz_data_nodate">(<a href="#ref-lars_schobitz_data_nodate" role="doc-biblioref"><span>“Data on Faecal Sludge Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>”</span> n.d.</a>)</span></p>
 <p>https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md</p>
 </section>
 <section id="display-data" class="level2">
@@ -255,9 +275,14 @@ dbl (1): volume
 <section id="ideas" class="level1">
 <h1>ideas</h1>
 <p>[] check weather data [] day and night time [] plot on a map</p>
+
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-lars_schobitz_data_nodate" class="csl-entry" role="listitem">
+<span>“Data on Faecal Sludge Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>.”</span> n.d. Accessed November 24, 2025. <a href="https://openwashdata.github.io/fslogisticskampala/">https://openwashdata.github.io/fslogisticskampala/</a>.
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

@@ -48,6 +48,7 @@ head(trucks, 4)
 
 source: 
 \#todo fix citations
+[@lars_schobitz_data_nodate]
 
 https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md
 
@@ -59,11 +60,8 @@ https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/o
 
 # conclusions
 
-# References
-
-
 # ideas
 
-[\] check weather data 
-[\] day and night time 
-[\] plot on a map
+\[] check weather data 
+\[] day and night time 
+\[] plot on a map
