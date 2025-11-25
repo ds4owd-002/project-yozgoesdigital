@@ -104,21 +104,19 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#project-description" id="toc-project-description" class="nav-link active" data-scroll-target="#project-description">Project Description</a>
+  <li><a href="#glossary" id="toc-glossary" class="nav-link active" data-scroll-target="#glossary">Glossary</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">2</span> Methods</a>
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries"><span class="header-section-number">2.1</span> Import libraries</a></li>
+  <li><a href="#import-raw-data" id="toc-import-raw-data" class="nav-link" data-scroll-target="#import-raw-data"><span class="header-section-number">2.2</span> Import raw data</a></li>
+  <li><a href="#display-data" id="toc-display-data" class="nav-link" data-scroll-target="#display-data"><span class="header-section-number">2.3</span> Display data</a></li>
+  <li><a href="#show-data-pipeline" id="toc-show-data-pipeline" class="nav-link" data-scroll-target="#show-data-pipeline"><span class="header-section-number">2.4</span> show data pipeline</a></li>
   </ul></li>
-  <li><a href="#exploring-data" id="toc-exploring-data" class="nav-link" data-scroll-target="#exploring-data">Exploring data</a>
-  <ul class="collapse">
-  <li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries">Import libraries</a></li>
-  <li><a href="#import-raw-data" id="toc-import-raw-data" class="nav-link" data-scroll-target="#import-raw-data">Import raw data</a></li>
-  <li><a href="#display-data" id="toc-display-data" class="nav-link" data-scroll-target="#display-data">Display data</a></li>
-  <li><a href="#show-data-pipeline" id="toc-show-data-pipeline" class="nav-link" data-scroll-target="#show-data-pipeline">show data pipeline</a></li>
-  </ul></li>
-  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
-  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">conclusions</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
-  <li><a href="#ideas" id="toc-ideas" class="nav-link" data-scroll-target="#ideas">ideas</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">3</span> Results</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">4</span> Conclusions</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">5</span> References</a></li>
+  <li><a href="#ideasactions" id="toc-ideasactions" class="nav-link" data-scroll-target="#ideasactions"><span class="header-section-number">6</span> Ideas/actions</a></li>
   </ul>
 </nav>
 </div>
@@ -127,7 +125,7 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Faecal sludge truck logistics analysis in Kampala, Uganda</h1>
-<p class="subtitle lead">An exploration to understand the structure and trends of an informal sector</p>
+<p class="subtitle lead">An exploration to understand the structure and trends of an informal faecal collection sector</p>
 </div>
 
 
@@ -156,61 +154,44 @@ div.csl-indent {
 </header>
 
 
-<section id="project-description" class="level1">
-<h1>Project Description</h1>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="glossary" class="level1 unnumbered">
+<h1 class="unnumbered">Glossary</h1>
+<p>TODO list of used terminology (kable?)</p>
+</section>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>describe which sources add a thesis or goal of analysis</p>
+<p>see the published document and think more could be gotten out of the dataset Personal goal was to master R and use a few specific techniques like linking different data sets, using geographical data and work on time series</p>
 </section>
-</section>
-<section id="exploring-data" class="level1">
-<h1>Exploring data</h1>
-<section id="import-libraries" class="level2">
-<h2 class="anchored" data-anchor-id="import-libraries">Import libraries</h2>
+<section id="methods" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Methods</h1>
+<p>Exploring data</p>
+<section id="import-libraries" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="import-libraries"><span class="header-section-number">2.1</span> Import libraries</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.2
-✔ ggplot2   3.5.2     ✔ tibble    3.3.0
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.1.0     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-</div>
-<p>#TODO: libraries likely needed later: dplyr knitr table library (which?) Geo or mapping library tidyr?</p>
 </section>
-<section id="import-raw-data" class="level2">
-<h2 class="anchored" data-anchor-id="import-raw-data">Import raw data</h2>
+<section id="import-raw-data" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="import-raw-data"><span class="header-section-number">2.2</span> Import raw data</h2>
+<p>The original set <span class="citation" data-cites="lars_schobitz_data_nodate">(<a href="#ref-lars_schobitz_data_nodate" role="doc-biblioref"><span>“Data on Faecal Sludge Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>”</span> n.d.</a>)</span> has 2 tables. One containing information of trips and the second table with metadata on the trucks ### Trips</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trips.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trips.csv"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 5653 Columns: 7
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr  (2): numberplate, plant
-dbl  (3): fid, lat, lon
-date (1): date
-time (1): time
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-</div>
+<p>hierboven</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trips, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trips, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 7
@@ -225,23 +206,13 @@ time (1): time
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>trucks <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trucks.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trucks <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trucks.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 35 Columns: 2
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (1): numberplate
-dbl (1): volume
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trucks, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trucks, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
@@ -256,33 +227,40 @@ dbl (1): volume
 <p>source: #todo fix citations <span class="citation" data-cites="lars_schobitz_data_nodate">(<a href="#ref-lars_schobitz_data_nodate" role="doc-biblioref"><span>“Data on Faecal Sludge Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>”</span> n.d.</a>)</span></p>
 <p>https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md</p>
 </section>
-<section id="display-data" class="level2">
-<h2 class="anchored" data-anchor-id="display-data">Display data</h2>
+<section id="display-data" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="display-data"><span class="header-section-number">2.3</span> Display data</h2>
 </section>
-<section id="show-data-pipeline" class="level2">
-<h2 class="anchored" data-anchor-id="show-data-pipeline">show data pipeline</h2>
+<section id="show-data-pipeline" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="show-data-pipeline"><span class="header-section-number">2.4</span> show data pipeline</h2>
 </section>
 </section>
-<section id="analysis" class="level1">
-<h1>Analysis</h1>
+<section id="results" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Results</h1>
 </section>
-<section id="conclusions" class="level1">
-<h1>conclusions</h1>
+<section id="conclusions" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Conclusions</h1>
 </section>
-<section id="references" class="level1">
-<h1>References</h1>
-</section>
-<section id="ideas" class="level1">
-<h1>ideas</h1>
-<p>[] check weather data [] day and night time [] plot on a map</p>
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<section id="references" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-lars_schobitz_data_nodate" class="csl-entry" role="listitem">
 <span>“Data on Faecal Sludge Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>.”</span> n.d. Accessed November 24, 2025. <a href="https://openwashdata.github.io/fslogisticskampala/">https://openwashdata.github.io/fslogisticskampala/</a>.
 </div>
-</div></section></div></main>
+</div>
+</section>
+<section id="ideasactions" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Ideas/actions</h1>
+<ul>
+<li>add license type for research</li>
+<li>check weather data</li>
+<li>day and night time (dim time)</li>
+<li>plot on a map</li>
+<li>check for NA values etc</li>
+<li><a href="https://ds4owd-002.github.io/website/content/project/#tbl-required-items">requirements</a></li>
+</ul>
+</section>
+
+</main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

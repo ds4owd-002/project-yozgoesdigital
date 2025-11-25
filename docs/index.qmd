@@ -1,44 +1,55 @@
 ---
 title: "Faecal sludge truck logistics analysis in Kampala, Uganda"
-subtitle: "An exploration to understand the structure and trends of an informal sector" 
+subtitle: "An exploration to understand the structure and trends of an informal faecal collection sector" 
 author:
   name: "Jos van der Ent"
 date: 18-12-2025
 format: 
   html: 
+    number-sections: true
     toc: true
     code-fold: true
     code-folding: true
 bibliography: references.bib
 ---
 
-# Project Description
+# Glossary {.unnumbered}
 
-## Introduction
+TODO list of used terminology (kable?)
+
+# Introduction
 
 describe which sources add a thesis or goal of analysis
 
-# Exploring data
+see the published document and think more could be gotten out of the dataset
+Personal goal was to master R and use a few specific techniques like linking different data sets, using geographical data and work on time series
+
+# Methods 
+Exploring data
 
 ## Import libraries
-
-```{r}
+```{r libraries, message = FALSE}
 library(tidyverse)
+library(dplyr)
+library(ggplot2)
 ```
-
-#TODO: libraries likely needed later: dplyr knitr table library (which?) Geo or mapping library tidyr?
 
 ## Import raw data
-
+The original set [@lars_schobitz_data_nodate] has 2 tables. One containing information of trips and the second table with metadata on the trucks 
+### Trips
 ```{r}
-trips <- read_csv(here::here("data/raw/trips.csv"))
+#| message = FALSE 
+trips <- read_csv(here::here("data/raw/trips.csv")) |>
+  head(4)
 ```
 
-```{r}
+hierboven
+```{r, echo = TRUE}
 head(trips, 4)
 ```
 
 ```{r}
+#| message = FALSE 
 trucks <- read_csv(here::here("data/raw/trucks.csv"))
 ```
 
@@ -46,22 +57,25 @@ trucks <- read_csv(here::here("data/raw/trucks.csv"))
 head(trucks, 4)
 ```
 
-source: 
-\#todo fix citations
-[@lars_schobitz_data_nodate]
-
 https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md
-
-## Display data
 
 ## show data pipeline
 
-# Analysis
+# Results
+## Explore data
+summarise tables
+map
 
-# conclusions
+# Conclusions
 
-# ideas
+# References
+::: {#refs}
+:::
 
-\[] check weather data 
-\[] day and night time 
-\[] plot on a map
+# Ideas/actions
+- add license type for research
+- check weather data
+- day and night time (dim time)
+- plot on a map
+-  check for NA values etc
+- [requirements](https://ds4owd-002.github.io/website/content/project/#tbl-required-items)
