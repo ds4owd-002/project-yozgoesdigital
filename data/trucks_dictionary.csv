@@ -1,0 +1,3 @@
+variable_name	variable_type	description
+numberplate	sring	license plate number used for identifying the truck
+volume	integer	Volume in m3
