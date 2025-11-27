@@ -3,6 +3,7 @@ title: "Faecal sludge truck logistics analysis in Kampala, Uganda"
 subtitle: "An exploration to understand the structure and trends of an informal faecal collection sector" 
 author:
   name: "Jos van der Ent"
+  orcid: 0009-0009-3940-3943
 date: today
 format: 
   html: 
@@ -13,20 +14,28 @@ format:
 bibliography: references.bib
 execute: 
   echo: true #remove false before submitting as the requirements dictate to add the code to the report
-  warning: false
+  warning: true
+license: "CC BY"
+#csl: apa.csl # incase to use custom citation style
 ---
 
 # Glossary {.unnumbered}
+
+| Abbreviation | Comment       |
+|:-------------|---------------|
+| FS           | Faecal sludge |
 
 TODO list of used terminology (kable?)
 
 # Introduction
 
-The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience \# Methods
+The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience
+
+# Methods
 
 ## Import libraries
 
-First the required libraries need to be imported to be able to read and process the datasets[@van_de_giesen_transafrican_2014].
+First the required libraries need to be imported to be able to read and process the datasets.
 
 ```{r libraries, message = FALSE}
 library(tidyverse)
@@ -34,9 +43,11 @@ library(dplyr)
 library(ggplot2)
 ```
 
-## Import raw data
+## Import trips data from fslogisticskampala
 
-The original set [@lars_schobitz_data_nodate] has 2 tables. One containing information of trips and the second table with metadata on the trucks: \### Trips
+The original set has 2 tables @lars_schobitz_fslogisticskampala_2024. One containing information of trips and the second table with metadata on the trucks. First we start with opening the trips.csv
+
+Read trips.csv:
 
 ```{r read_trips}
 #| message = FALSE 
@@ -44,26 +55,82 @@ trips <- read_csv(here::here("data/raw/trips.csv")) |>
   head(4)
 ```
 
-hierboven
+## Import trucks data from fslogisticskampala
 
-```{r, echo = TRUE}
-head(trips, 4)
-```
+Read trucks.csv:
 
 ```{r}
 #| message = FALSE 
-trucks <- read_csv(here::here("data/raw/trucks.csv"))
+trucks <- read_csv(here::here("data/raw/trucks.csv")) |>
+  head(4)
+  
 ```
+
+## Read weather data from Tahmo.org
+
+waiting reply whether the data is available and can be used
+
+## Checking data integrity
+
+In order to understand the data first we will check the raw data.
+
+## Organize data show data pipeline
+
+Cleaning steps
+
+### Write data into folder with cleaned data
+
+trips
 
 ```{r}
-head(trucks, 4)
+trips |>
+  write_csv(here::here("data/processed/trips.csv"))
 ```
 
-https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md
-
-## show data pipeline
-
 # Results
+
+## Organise data for analysis
+
+In order to analyse the data additional [@kimball_data_2013]
+
+Generate a date dimension table and dimension time table in @df_star-schema
+
+```{mermaid}
+#| label: df_star-schema
+#| fig: Start schema for final datafram
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C[Dataframe]
+  C -- D[dim_date]
+  C --> E[dim_time]
+```
+
+```{mermaid}
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : includes
+    CUSTOMER {
+        string id
+        string name
+        string email
+    }
+    ORDER {
+        string id
+        date orderDate
+        string status
+    }
+    PRODUCT {
+        string id
+        string name
+        float price
+    }
+    ORDER_ITEM {
+        int quantity
+        float price
+    }
+
+```
 
 ## Explore data
 
@@ -78,13 +145,13 @@ summarise tables map
 
 # License
 
-dataset: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md
+The original dataset on faecal sludge logistics was published under [CC-BY](https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md) The results of this report are under presented here under similar license:
 
 # Ideas/actions
 
--   add license type for research
--   check weather data
--   day and night time (dim time)
--   plot on a map
--   check for NA values etc
--   [requirements](https://ds4owd-002.github.io/website/content/project/#tbl-required-items)
+-   \[\] add license type for research
+-   \[\] check weather data
+-   \[\] day and night time (dim time)
+-   \[\] plot on a map
+-   \[\] check for NA values etc
+-   \[\] [requirements](https://ds4owd-002.github.io/website/content/project/#tbl-required-items)
