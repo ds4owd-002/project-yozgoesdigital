@@ -27,6 +27,8 @@ license: "CC BY"
 
 TODO list of used terminology (kable?)
 
+
+
 # Introduction
 
 The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience
@@ -88,7 +90,31 @@ trips |>
 ```
 
 # Results
-
+```{mermaid}
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ ORDER_ITEM : contains
+  PRODUCT ||--o{ ORDER_ITEM : includes
+  CUSTOMER {
+    string id
+    string name
+    string email
+  }
+  ORDER {
+    string id
+    date orderDate
+    string status
+  }
+  PRODUCT {
+    string id
+    string name
+    float price
+  }
+  ORDER_ITEM {
+    int quantity
+    float price
+  }
+```
 ## Organise data for analysis
 
 In order to analyse the data additional [@kimball_data_2013]
@@ -100,36 +126,44 @@ Generate a date dimension table and dimension time table in @df_star-schema
 #| fig: Start schema for final datafram
 flowchart LR
   A[Hard edge] --> B(Round edge)
-  B --> C[Dataframe]
-  C -- D[dim_date]
-  C --> E[dim_time]
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
 ```
 
 ```{mermaid}
-erDiagram
-    CUSTOMER ||--o{ ORDER : places
-    ORDER ||--|{ ORDER_ITEM : contains
-    PRODUCT ||--o{ ORDER_ITEM : includes
-    CUSTOMER {
-        string id
-        string name
-        string email
-    }
-    ORDER {
-        string id
-        date orderDate
-        string status
-    }
-    PRODUCT {
-        string id
-        string name
-        float price
-    }
-    ORDER_ITEM {
-        int quantity
-        float price
-    }
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+test tex and such
 
+```{mermaid}
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ ORDER_ITEM : contains
+  PRODUCT ||--o{ ORDER_ITEM : includes
+  CUSTOMER {
+    string id
+    string name
+    string email
+  }
+  ORDER {
+    string id
+    date orderDate
+    string status
+  }
+  PRODUCT {
+    string id
+    string name
+    float price
+  }
+  ORDER_ITEM {
+    int quantity
+    float price
+  }
 ```
 
 ## Explore data
