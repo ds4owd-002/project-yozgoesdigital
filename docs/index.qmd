@@ -3,7 +3,7 @@ title: "Faecal sludge truck logistics analysis in Kampala, Uganda"
 subtitle: "An exploration to understand the structure and trends of an informal faecal collection sector" 
 author:
   name: "Jos van der Ent"
-date: 18-12-2025
+date: today
 format: 
   html: 
     number-sections: true
@@ -11,6 +11,9 @@ format:
     code-fold: true
     code-folding: true
 bibliography: references.bib
+execute: 
+  echo: true #remove false before submitting as the requirements dictate to add the code to the report
+  warning: false
 ---
 
 # Glossary {.unnumbered}
@@ -19,15 +22,12 @@ TODO list of used terminology (kable?)
 
 # Introduction
 
-describe which sources add a thesis or goal of analysis
-
-see the published document and think more could be gotten out of the dataset
-Personal goal was to master R and use a few specific techniques like linking different data sets, using geographical data and work on time series
-
-# Methods 
-Exploring data
+The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience \# Methods
 
 ## Import libraries
+
+First the required libraries need to be imported to be able to read and process the datasets[@van_de_giesen_transafrican_2014].
+
 ```{r libraries, message = FALSE}
 library(tidyverse)
 library(dplyr)
@@ -35,15 +35,17 @@ library(ggplot2)
 ```
 
 ## Import raw data
-The original set [@lars_schobitz_data_nodate] has 2 tables. One containing information of trips and the second table with metadata on the trucks 
-### Trips
-```{r}
+
+The original set [@lars_schobitz_data_nodate] has 2 tables. One containing information of trips and the second table with metadata on the trucks: \### Trips
+
+```{r read_trips}
 #| message = FALSE 
 trips <- read_csv(here::here("data/raw/trips.csv")) |>
   head(4)
 ```
 
 hierboven
+
 ```{r, echo = TRUE}
 head(trips, 4)
 ```
@@ -62,20 +64,27 @@ https://openwashdata.github.io/fslogisticskampala/ license: https://github.com/o
 ## show data pipeline
 
 # Results
+
 ## Explore data
-summarise tables
-map
+
+summarise tables map
 
 # Conclusions
 
 # References
+
 ::: {#refs}
 :::
 
+# License
+
+dataset: https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md
+
 # Ideas/actions
-- add license type for research
-- check weather data
-- day and night time (dim time)
-- plot on a map
--  check for NA values etc
-- [requirements](https://ds4owd-002.github.io/website/content/project/#tbl-required-items)
+
+-   add license type for research
+-   check weather data
+-   day and night time (dim time)
+-   plot on a map
+-   check for NA values etc
+-   [requirements](https://ds4owd-002.github.io/website/content/project/#tbl-required-items)
