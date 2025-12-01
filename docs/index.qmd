@@ -43,6 +43,8 @@ First the required libraries need to be imported to be able to read and process 
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(gt)
+library(here)
 ```
 
 ## Import trips data from fslogisticskampala
@@ -57,6 +59,12 @@ trips <- read_csv(here::here("data/raw/trips.csv")) |>
   head(4)
 ```
 
+```{r}
+#| message = FALSE 
+read_csv(here::here("data/trips_dictionary.csv")) |>
+  gt()
+```
+
 ## Import trucks data from fslogisticskampala
 
 Read trucks.csv:
@@ -68,9 +76,12 @@ trucks <- read_csv(here::here("data/raw/trucks.csv")) |>
   
 ```
 
-## Read weather data from Tahmo.org
+```{r}
+#| message = FALSE 
+read_csv(here::here("data/trucks_dictionary.csv")) |>
+gt()
+```
 
-waiting reply whether the data is available and can be used
 
 ## Checking data integrity
 
