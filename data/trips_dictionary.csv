@@ -1,8 +1,8 @@
-variable_name	variable_type	description
-fid	integer	key
-numberplate	string	used as foreign key to link to trucks dataset
-date	date	date in ISO 8601 derived style: year/month/day --> '2025/11/20'
-time	time	time format
-lat	decimal	latitude of collection location
-lon	decimal	longtude of collection location
-plant	string	Name of treatment plant
+variable_name,	variable_type,	description
+fid,	integer,	key
+numberplate,	string,	used as foreign key to link to trucks dataset
+date,	date,	date in ISO 8601 derived style: year/month/day --> '2025/11/20'
+time,	time,	time format
+lat,	decimal,	latitude of collection location
+lon,	decimal,	longtude of collection location
+plant,	string,	Name of treatment plant
