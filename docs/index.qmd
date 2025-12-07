@@ -11,6 +11,8 @@ format:
     toc: true
     code-fold: true
     code-folding: true
+crossref:
+  chapters: true
 bibliography: references.bib
 execute: 
   echo: true #remove false before submitting as the requirements dictate to add the code to the report
@@ -25,13 +27,9 @@ license: "CC BY"
 |:-------------|---------------|
 | FS           | Faecal sludge |
 
-TODO list of used terminology (kable?)
-
-
-
 # Introduction
 
-The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience
+The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal of this dataset is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience
 
 # Methods
 
@@ -47,27 +45,30 @@ library(gt)
 library(here)
 ```
 
-## Import trips data from fslogisticskampala
+## Import trips data from 'fslogisticskampala'
 
-The original set has 2 tables @lars_schobitz_fslogisticskampala_2024. One containing information of trips and the second table with metadata on the trucks. First we start with opening the trips.csv
+The original set has 2 tables @lars_schobitz_fslogisticskampala_2024. One set contains information of trips of faecal sludge collection trucks and the second table with metadata on of the trucks. First we start with opening the trips.csv and save it as trips_raw.
 
 Read trips.csv:
 
 ```{r read_trips}
 #| message = FALSE 
-trips <- read_csv(here::here("data/raw/trips.csv")) |>
-  head(4)
+trips_raw <- read_csv(here::here("data/raw/trips.csv"))
 ```
 
+@tbl-trips-dictionary shows the dictionary of the trips dataset. 
+
 ```{r}
-#| message = FALSE 
+#| label: tbl-trips-dictionary
+#| tbl-cap: "Dictionary for trips table"
+#| message: FALSE 
 read_csv(here::here("data/trips_dictionary.csv")) |>
   gt()
 ```
+From the dictionary it can be seen the trips data has information about the each recorded trip. Where the 'numberplate'column can be used as the foreign key to link to the truck dataset as described below.
 
-## Import trucks data from fslogisticskampala
-
-Read trucks.csv:
+## Import trucks data from 'fslogisticskampala'
+The second dataset to import is the trucks data as published in the website. Read trucks.csv:
 
 ```{r}
 #| message = FALSE 
@@ -76,16 +77,49 @@ trucks <- read_csv(here::here("data/raw/trucks.csv")) |>
   
 ```
 
+@tbl-trucks-dictionary shows the dictionary of the trucks set. This is a more simpel table containing meta data on the truck. It only contains 2 variables. The first is the 'numberplate' which can function as key to link to the trips dataset and the second variable is the volume of the specific truck in m3.
 ```{r}
-#| message = FALSE 
+#| label: tbl-trucks-dictionary
+#| message: FALSE 
 read_csv(here::here("data/trucks_dictionary.csv")) |>
 gt()
 ```
 
+## Import dim_date
+In order to aid analysis a additional table is generated and imported. This table has a daily geranuality and contains time intelligence information for the data collection period. 
 
 ## Checking data integrity
 
-In order to understand the data first we will check the raw data.
+trips summary check
+
+```{r}
+waste_tbl_income <- waste_gt |>
+    filter(!is.na(generation_kg_capita))  |>
+    group_by(income_cat) |>
+    summarise(
+        count = n(),
+        mean = mean(generation_kg_capita),
+        sd = sd(generation_kg_capita),
+        median = median(generation_kg_capita),
+        min = min(generation_kg_capita),
+        max = max(generation_kg_capita)
+    )
+```
+
+than generate the summary table:
+
+```{r}
+waste_tbl_income |>
+    gt() |>
+    tab_header(title = "Waste generation per capita (kg/year) by income group",
+               subtitle = "Data from 326 cities") |>
+    fmt_number(columns = count:max, decimals = 0) |>
+    cols_label(income_cat = "income category")
+```
+
+
+
+ In order to understand the data first we will check the raw data.
 
 ## Organize data show data pipeline
 
@@ -96,11 +130,17 @@ Cleaning steps
 trips
 
 ```{r}
-trips |>
+trips_raw |>
   write_csv(here::here("data/processed/trips.csv"))
 ```
 
+```{r}
+trucks_raw |>
+  write_csv(here::here("data/processed/trucks.csv"))
+```
+
 # Results
+
 ```{mermaid}
 erDiagram
   CUSTOMER ||--o{ ORDER : places
@@ -126,6 +166,7 @@ erDiagram
     float price
   }
 ```
+
 ## Organise data for analysis
 
 In order to analyse the data additional [@kimball_data_2013]
@@ -149,6 +190,7 @@ flowchart LR
   C --> D[Result one]
   C --> E[Result two]
 ```
+
 test tex and such
 
 ```{mermaid}

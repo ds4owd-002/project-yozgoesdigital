@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jos van der Ent">
-<meta name="dcterms.date" content="2025-12-01">
+<meta name="dcterms.date" content="2025-12-07">
 
 <title>Faecal sludge truck logistics analysis in Kampala, Uganda</title>
 <style>
@@ -112,13 +112,12 @@ div.csl-indent {
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">2</span> Methods</a>
   <ul class="collapse">
   <li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries"><span class="header-section-number">2.1</span> Import libraries</a></li>
-  <li><a href="#import-trips-data-from-fslogisticskampala" id="toc-import-trips-data-from-fslogisticskampala" class="nav-link" data-scroll-target="#import-trips-data-from-fslogisticskampala"><span class="header-section-number">2.2</span> Import trips data from fslogisticskampala</a></li>
-  <li><a href="#import-trucks-data-from-fslogisticskampala" id="toc-import-trucks-data-from-fslogisticskampala" class="nav-link" data-scroll-target="#import-trucks-data-from-fslogisticskampala"><span class="header-section-number">2.3</span> Import trucks data from fslogisticskampala</a></li>
-  <li><a href="#read-weather-data-from-tahmo.org" id="toc-read-weather-data-from-tahmo.org" class="nav-link" data-scroll-target="#read-weather-data-from-tahmo.org"><span class="header-section-number">2.4</span> Read weather data from Tahmo.org</a></li>
-  <li><a href="#checking-data-integrity" id="toc-checking-data-integrity" class="nav-link" data-scroll-target="#checking-data-integrity"><span class="header-section-number">2.5</span> Checking data integrity</a></li>
-  <li><a href="#organize-data-show-data-pipeline" id="toc-organize-data-show-data-pipeline" class="nav-link" data-scroll-target="#organize-data-show-data-pipeline"><span class="header-section-number">2.6</span> Organize data show data pipeline</a>
+  <li><a href="#import-trips-data-from-fslogisticskampala" id="toc-import-trips-data-from-fslogisticskampala" class="nav-link" data-scroll-target="#import-trips-data-from-fslogisticskampala"><span class="header-section-number">2.2</span> Import trips data from ‘fslogisticskampala’</a></li>
+  <li><a href="#import-trucks-data-from-fslogisticskampala" id="toc-import-trucks-data-from-fslogisticskampala" class="nav-link" data-scroll-target="#import-trucks-data-from-fslogisticskampala"><span class="header-section-number">2.3</span> Import trucks data from ‘fslogisticskampala’</a></li>
+  <li><a href="#checking-data-integrity" id="toc-checking-data-integrity" class="nav-link" data-scroll-target="#checking-data-integrity"><span class="header-section-number">2.4</span> Checking data integrity</a></li>
+  <li><a href="#organize-data-show-data-pipeline" id="toc-organize-data-show-data-pipeline" class="nav-link" data-scroll-target="#organize-data-show-data-pipeline"><span class="header-section-number">2.5</span> Organize data show data pipeline</a>
   <ul class="collapse">
-  <li><a href="#write-data-into-folder-with-cleaned-data" id="toc-write-data-into-folder-with-cleaned-data" class="nav-link" data-scroll-target="#write-data-into-folder-with-cleaned-data"><span class="header-section-number">2.6.1</span> Write data into folder with cleaned data</a></li>
+  <li><a href="#write-data-into-folder-with-cleaned-data" id="toc-write-data-into-folder-with-cleaned-data" class="nav-link" data-scroll-target="#write-data-into-folder-with-cleaned-data"><span class="header-section-number">2.5.1</span> Write data into folder with cleaned data</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">3</span> Results</a>
@@ -155,7 +154,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 1, 2025</p>
+      <p class="date">December 7, 2025</p>
     </div>
   </div>
   
@@ -183,11 +182,10 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-<p>TODO list of used terminology (kable?)</p>
 </section>
 <section id="introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>The ‘fslogisticskampala’ data set is shared on <a href="www.openwashdata.org">OpenWashdata</a> by Lars Shöbitz. The goal is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience</p>
+<p>The ‘fslogisticskampala’ data set is shared on <a href="www.openwashdata.org">OpenWashdata</a> by Lars Shöbitz. The goal of this dataset is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience</p>
 </section>
 <section id="methods" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Methods</h1>
@@ -200,45 +198,52 @@ div.csl-indent {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="import-trips-data-from-fslogisticskampala" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="import-trips-data-from-fslogisticskampala"><span class="header-section-number">2.2</span> Import trips data from fslogisticskampala</h2>
-<p>The original set has 2 tables <span class="citation" data-cites="lars_schobitz_fslogisticskampala_2024"><span>“Fslogisticskampala: <span>Data</span> on Faecal Sludge; Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>”</span> (<a href="#ref-lars_schobitz_fslogisticskampala_2024" role="doc-biblioref">2024</a>)</span>. One containing information of trips and the second table with metadata on the trucks. First we start with opening the trips.csv</p>
+<h2 data-number="2.2" class="anchored" data-anchor-id="import-trips-data-from-fslogisticskampala"><span class="header-section-number">2.2</span> Import trips data from ‘fslogisticskampala’</h2>
+<p>The original set has 2 tables <span class="citation" data-cites="lars_schobitz_fslogisticskampala_2024"><span>“Fslogisticskampala: <span>Data</span> on Faecal Sludge; Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>”</span> (<a href="#ref-lars_schobitz_fslogisticskampala_2024" role="doc-biblioref">2024</a>)</span>. One set contains information of trips of faecal sludge collection trucks and the second table with metadata on of the trucks. First we start with opening the trips.csv</p>
 <p>Read trips.csv:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trips.csv"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trips_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trips.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p>In the <a href="#tbl-trips-dictionary" class="quarto-xref">Table&nbsp;2.1</a> table #todo link table below</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/trips_dictionary.csv"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
+<div id="tbl-trips-dictionary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-trips-dictionary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.1: Dictionary for trips table
+</figcaption>
+<div aria-describedby="tbl-trips-dictionary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="urclzohhut" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#urclzohhut table {
+<div id="nzkynchdvc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nzkynchdvc table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#urclzohhut thead, #urclzohhut tbody, #urclzohhut tfoot, #urclzohhut tr, #urclzohhut td, #urclzohhut th {
+#nzkynchdvc thead, #nzkynchdvc tbody, #nzkynchdvc tfoot, #nzkynchdvc tr, #nzkynchdvc td, #nzkynchdvc th {
   border-style: none;
 }
 
-#urclzohhut p {
+#nzkynchdvc p {
   margin: 0;
   padding: 0;
 }
 
-#urclzohhut .gt_table {
+#nzkynchdvc .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -264,12 +269,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#urclzohhut .gt_caption {
+#nzkynchdvc .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#urclzohhut .gt_title {
+#nzkynchdvc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -281,7 +286,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#urclzohhut .gt_subtitle {
+#nzkynchdvc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -293,7 +298,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#urclzohhut .gt_heading {
+#nzkynchdvc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -305,13 +310,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#urclzohhut .gt_bottom_border {
+#nzkynchdvc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#urclzohhut .gt_col_headings {
+#nzkynchdvc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -326,7 +331,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#urclzohhut .gt_col_heading {
+#nzkynchdvc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -346,7 +351,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#urclzohhut .gt_column_spanner_outer {
+#nzkynchdvc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -358,15 +363,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#urclzohhut .gt_column_spanner_outer:first-child {
+#nzkynchdvc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#urclzohhut .gt_column_spanner_outer:last-child {
+#nzkynchdvc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#urclzohhut .gt_column_spanner {
+#nzkynchdvc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -378,11 +383,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#urclzohhut .gt_spanner_row {
+#nzkynchdvc .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#urclzohhut .gt_group_heading {
+#nzkynchdvc .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -408,7 +413,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#urclzohhut .gt_empty_group_heading {
+#nzkynchdvc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -423,15 +428,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#urclzohhut .gt_from_md > :first-child {
+#nzkynchdvc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#urclzohhut .gt_from_md > :last-child {
+#nzkynchdvc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#urclzohhut .gt_row {
+#nzkynchdvc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -450,7 +455,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#urclzohhut .gt_stub {
+#nzkynchdvc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -463,7 +468,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#urclzohhut .gt_stub_row_group {
+#nzkynchdvc .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -477,15 +482,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#urclzohhut .gt_row_group_first td {
+#nzkynchdvc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#urclzohhut .gt_row_group_first th {
+#nzkynchdvc .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#urclzohhut .gt_summary_row {
+#nzkynchdvc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -495,16 +500,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#urclzohhut .gt_first_summary_row {
+#nzkynchdvc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#urclzohhut .gt_first_summary_row.thick {
+#nzkynchdvc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#urclzohhut .gt_last_summary_row {
+#nzkynchdvc .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -514,7 +519,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#urclzohhut .gt_grand_summary_row {
+#nzkynchdvc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -524,7 +529,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#urclzohhut .gt_first_grand_summary_row {
+#nzkynchdvc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -534,7 +539,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#urclzohhut .gt_last_grand_summary_row_top {
+#nzkynchdvc .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -544,11 +549,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#urclzohhut .gt_striped {
+#nzkynchdvc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#urclzohhut .gt_table_body {
+#nzkynchdvc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -557,7 +562,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#urclzohhut .gt_footnotes {
+#nzkynchdvc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -571,7 +576,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#urclzohhut .gt_footnote {
+#nzkynchdvc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -580,7 +585,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#urclzohhut .gt_sourcenotes {
+#nzkynchdvc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -594,7 +599,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#urclzohhut .gt_sourcenote {
+#nzkynchdvc .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -602,77 +607,77 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#urclzohhut .gt_left {
+#nzkynchdvc .gt_left {
   text-align: left;
 }
 
-#urclzohhut .gt_center {
+#nzkynchdvc .gt_center {
   text-align: center;
 }
 
-#urclzohhut .gt_right {
+#nzkynchdvc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#urclzohhut .gt_font_normal {
+#nzkynchdvc .gt_font_normal {
   font-weight: normal;
 }
 
-#urclzohhut .gt_font_bold {
+#nzkynchdvc .gt_font_bold {
   font-weight: bold;
 }
 
-#urclzohhut .gt_font_italic {
+#nzkynchdvc .gt_font_italic {
   font-style: italic;
 }
 
-#urclzohhut .gt_super {
+#nzkynchdvc .gt_super {
   font-size: 65%;
 }
 
-#urclzohhut .gt_footnote_marks {
+#nzkynchdvc .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#urclzohhut .gt_asterisk {
+#nzkynchdvc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#urclzohhut .gt_indent_1 {
+#nzkynchdvc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#urclzohhut .gt_indent_2 {
+#nzkynchdvc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#urclzohhut .gt_indent_3 {
+#nzkynchdvc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#urclzohhut .gt_indent_4 {
+#nzkynchdvc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#urclzohhut .gt_indent_5 {
+#nzkynchdvc .gt_indent_5 {
   text-indent: 25px;
 }
 
-#urclzohhut .katex-display {
+#nzkynchdvc .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#urclzohhut div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#nzkynchdvc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="variable_name" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable_name</th>
@@ -722,9 +727,12 @@ div.csl-indent {
 </div>
 </div>
 </div>
+</figure>
+</div>
+</div>
 </section>
 <section id="import-trucks-data-from-fslogisticskampala" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="import-trucks-data-from-fslogisticskampala"><span class="header-section-number">2.3</span> Import trucks data from fslogisticskampala</h2>
+<h2 data-number="2.3" class="anchored" data-anchor-id="import-trucks-data-from-fslogisticskampala"><span class="header-section-number">2.3</span> Import trucks data from ‘fslogisticskampala’</h2>
 <p>Read trucks.csv:</p>
 <div class="cell">
 <details class="code-fold">
@@ -733,39 +741,37 @@ div.csl-indent {
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p>In <a href="#tbl-trucks-dictionary" class="quarto-xref">Table&nbsp;2.2</a> the data from the trucks data set is described.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/trucks_dictionary.csv"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 2 Columns: 3
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (3): variable_name, variable_type, description
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
+<div id="tbl-trucks-dictionary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-trucks-dictionary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.2
+</figcaption>
+<div aria-describedby="tbl-trucks-dictionary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="duxxfizizr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#duxxfizizr table {
+<div id="yaqninawnl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yaqninawnl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#duxxfizizr thead, #duxxfizizr tbody, #duxxfizizr tfoot, #duxxfizizr tr, #duxxfizizr td, #duxxfizizr th {
+#yaqninawnl thead, #yaqninawnl tbody, #yaqninawnl tfoot, #yaqninawnl tr, #yaqninawnl td, #yaqninawnl th {
   border-style: none;
 }
 
-#duxxfizizr p {
+#yaqninawnl p {
   margin: 0;
   padding: 0;
 }
 
-#duxxfizizr .gt_table {
+#yaqninawnl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -791,12 +797,12 @@ chr (3): variable_name, variable_type, description
   border-left-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_caption {
+#yaqninawnl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#duxxfizizr .gt_title {
+#yaqninawnl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -808,7 +814,7 @@ chr (3): variable_name, variable_type, description
   border-bottom-width: 0;
 }
 
-#duxxfizizr .gt_subtitle {
+#yaqninawnl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -820,7 +826,7 @@ chr (3): variable_name, variable_type, description
   border-top-width: 0;
 }
 
-#duxxfizizr .gt_heading {
+#yaqninawnl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -832,13 +838,13 @@ chr (3): variable_name, variable_type, description
   border-right-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_bottom_border {
+#yaqninawnl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_col_headings {
+#yaqninawnl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -853,7 +859,7 @@ chr (3): variable_name, variable_type, description
   border-right-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_col_heading {
+#yaqninawnl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -873,7 +879,7 @@ chr (3): variable_name, variable_type, description
   overflow-x: hidden;
 }
 
-#duxxfizizr .gt_column_spanner_outer {
+#yaqninawnl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -885,15 +891,15 @@ chr (3): variable_name, variable_type, description
   padding-right: 4px;
 }
 
-#duxxfizizr .gt_column_spanner_outer:first-child {
+#yaqninawnl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#duxxfizizr .gt_column_spanner_outer:last-child {
+#yaqninawnl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#duxxfizizr .gt_column_spanner {
+#yaqninawnl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -905,11 +911,11 @@ chr (3): variable_name, variable_type, description
   width: 100%;
 }
 
-#duxxfizizr .gt_spanner_row {
+#yaqninawnl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#duxxfizizr .gt_group_heading {
+#yaqninawnl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -935,7 +941,7 @@ chr (3): variable_name, variable_type, description
   text-align: left;
 }
 
-#duxxfizizr .gt_empty_group_heading {
+#yaqninawnl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -950,15 +956,15 @@ chr (3): variable_name, variable_type, description
   vertical-align: middle;
 }
 
-#duxxfizizr .gt_from_md > :first-child {
+#yaqninawnl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#duxxfizizr .gt_from_md > :last-child {
+#yaqninawnl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#duxxfizizr .gt_row {
+#yaqninawnl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -977,7 +983,7 @@ chr (3): variable_name, variable_type, description
   overflow-x: hidden;
 }
 
-#duxxfizizr .gt_stub {
+#yaqninawnl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -990,7 +996,7 @@ chr (3): variable_name, variable_type, description
   padding-right: 5px;
 }
 
-#duxxfizizr .gt_stub_row_group {
+#yaqninawnl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1004,15 +1010,15 @@ chr (3): variable_name, variable_type, description
   vertical-align: top;
 }
 
-#duxxfizizr .gt_row_group_first td {
+#yaqninawnl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#duxxfizizr .gt_row_group_first th {
+#yaqninawnl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#duxxfizizr .gt_summary_row {
+#yaqninawnl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1022,16 +1028,16 @@ chr (3): variable_name, variable_type, description
   padding-right: 5px;
 }
 
-#duxxfizizr .gt_first_summary_row {
+#yaqninawnl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_first_summary_row.thick {
+#yaqninawnl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#duxxfizizr .gt_last_summary_row {
+#yaqninawnl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1041,7 +1047,7 @@ chr (3): variable_name, variable_type, description
   border-bottom-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_grand_summary_row {
+#yaqninawnl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1051,7 +1057,7 @@ chr (3): variable_name, variable_type, description
   padding-right: 5px;
 }
 
-#duxxfizizr .gt_first_grand_summary_row {
+#yaqninawnl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1061,7 +1067,7 @@ chr (3): variable_name, variable_type, description
   border-top-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_last_grand_summary_row_top {
+#yaqninawnl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1071,11 +1077,11 @@ chr (3): variable_name, variable_type, description
   border-bottom-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_striped {
+#yaqninawnl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#duxxfizizr .gt_table_body {
+#yaqninawnl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1084,7 +1090,7 @@ chr (3): variable_name, variable_type, description
   border-bottom-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_footnotes {
+#yaqninawnl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1098,7 +1104,7 @@ chr (3): variable_name, variable_type, description
   border-right-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_footnote {
+#yaqninawnl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1107,7 +1113,7 @@ chr (3): variable_name, variable_type, description
   padding-right: 5px;
 }
 
-#duxxfizizr .gt_sourcenotes {
+#yaqninawnl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1121,7 +1127,7 @@ chr (3): variable_name, variable_type, description
   border-right-color: #D3D3D3;
 }
 
-#duxxfizizr .gt_sourcenote {
+#yaqninawnl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1129,77 +1135,77 @@ chr (3): variable_name, variable_type, description
   padding-right: 5px;
 }
 
-#duxxfizizr .gt_left {
+#yaqninawnl .gt_left {
   text-align: left;
 }
 
-#duxxfizizr .gt_center {
+#yaqninawnl .gt_center {
   text-align: center;
 }
 
-#duxxfizizr .gt_right {
+#yaqninawnl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#duxxfizizr .gt_font_normal {
+#yaqninawnl .gt_font_normal {
   font-weight: normal;
 }
 
-#duxxfizizr .gt_font_bold {
+#yaqninawnl .gt_font_bold {
   font-weight: bold;
 }
 
-#duxxfizizr .gt_font_italic {
+#yaqninawnl .gt_font_italic {
   font-style: italic;
 }
 
-#duxxfizizr .gt_super {
+#yaqninawnl .gt_super {
   font-size: 65%;
 }
 
-#duxxfizizr .gt_footnote_marks {
+#yaqninawnl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#duxxfizizr .gt_asterisk {
+#yaqninawnl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#duxxfizizr .gt_indent_1 {
+#yaqninawnl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#duxxfizizr .gt_indent_2 {
+#yaqninawnl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#duxxfizizr .gt_indent_3 {
+#yaqninawnl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#duxxfizizr .gt_indent_4 {
+#yaqninawnl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#duxxfizizr .gt_indent_5 {
+#yaqninawnl .gt_indent_5 {
   text-indent: 25px;
 }
 
-#duxxfizizr .katex-display {
+#yaqninawnl .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#duxxfizizr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#yaqninawnl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<table class="gt_table do-not-create-environment caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="variable_name" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable_name</th>
@@ -1224,26 +1230,26 @@ chr (3): variable_name, variable_type, description
 </div>
 </div>
 </div>
+</figure>
+</div>
+</div>
 </section>
-<section id="read-weather-data-from-tahmo.org" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="read-weather-data-from-tahmo.org"><span class="header-section-number">2.4</span> Read weather data from Tahmo.org</h2>
-<p>waiting reply whether the data is available and can be used</p>
-</section>
-<section id="checking-data-integrity" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="checking-data-integrity"><span class="header-section-number">2.5</span> Checking data integrity</h2>
+<section id="checking-data-integrity" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="checking-data-integrity"><span class="header-section-number">2.4</span> Checking data integrity</h2>
+<p>trips summary check</p>
 <p>In order to understand the data first we will check the raw data.</p>
 </section>
-<section id="organize-data-show-data-pipeline" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="organize-data-show-data-pipeline"><span class="header-section-number">2.6</span> Organize data show data pipeline</h2>
+<section id="organize-data-show-data-pipeline" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="organize-data-show-data-pipeline"><span class="header-section-number">2.5</span> Organize data show data pipeline</h2>
 <p>Cleaning steps</p>
-<section id="write-data-into-folder-with-cleaned-data" class="level3" data-number="2.6.1">
-<h3 data-number="2.6.1" class="anchored" data-anchor-id="write-data-into-folder-with-cleaned-data"><span class="header-section-number">2.6.1</span> Write data into folder with cleaned data</h3>
+<section id="write-data-into-folder-with-cleaned-data" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="write-data-into-folder-with-cleaned-data"><span class="header-section-number">2.5.1</span> Write data into folder with cleaned data</h3>
 <p>trips</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>trips <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/processed/trips.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trips_raw <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/processed/trips.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -1254,29 +1260,29 @@ chr (3): variable_name, variable_type, description
 <div class="cell" data-layout-align="default">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>erDiagram</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  CUSTOMER ||--o{ ORDER : places</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  ORDER ||--|{ ORDER_ITEM : contains</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  PRODUCT ||--o{ ORDER_ITEM : includes</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  CUSTOMER {</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    string name</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    string email</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  ORDER {</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    date orderDate</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    string status</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  PRODUCT {</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    string name</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    float price</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  ORDER_ITEM {</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    int quantity</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    float price</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>erDiagram</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  CUSTOMER ||--o{ ORDER : places</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  ORDER ||--|{ ORDER_ITEM : contains</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  PRODUCT ||--o{ ORDER_ITEM : includes</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  CUSTOMER {</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    string id</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    string name</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    string email</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  ORDER {</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    string id</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    date orderDate</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    string status</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  PRODUCT {</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    string id</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    string name</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    float price</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  ORDER_ITEM {</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    int quantity</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    float price</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1318,13 +1324,13 @@ chr (3): variable_name, variable_type, description
 <div class="cell" data-layout-align="default">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>#| label: df_star-schema</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>#| fig: Start schema for final datafram</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  A[Hard edge] --&gt; B(Round edge)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  B --&gt; C{Decision}</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  C --&gt; D[Result one]</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  C --&gt; E[Result two]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>#| label: df_star-schema</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>#| fig: Start schema for final datafram</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  A[Hard edge] --&gt; B(Round edge)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  B --&gt; C{Decision}</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  C --&gt; D[Result one]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  C --&gt; E[Result two]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1346,11 +1352,11 @@ flowchart LR
 <div class="cell" data-layout-align="default">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  A[Hard edge] --&gt; B(Round edge)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  B --&gt; C{Decision}</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  C --&gt; D[Result one]</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  C --&gt; E[Result two]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  A[Hard edge] --&gt; B(Round edge)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  B --&gt; C{Decision}</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  C --&gt; D[Result one]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  C --&gt; E[Result two]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1371,29 +1377,29 @@ flowchart LR
 <div class="cell" data-layout-align="default">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>erDiagram</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  CUSTOMER ||--o{ ORDER : places</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  ORDER ||--|{ ORDER_ITEM : contains</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  PRODUCT ||--o{ ORDER_ITEM : includes</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  CUSTOMER {</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    string name</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    string email</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  ORDER {</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    date orderDate</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    string status</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  PRODUCT {</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    string name</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    float price</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  ORDER_ITEM {</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    int quantity</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    float price</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>erDiagram</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  CUSTOMER ||--o{ ORDER : places</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  ORDER ||--|{ ORDER_ITEM : contains</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  PRODUCT ||--o{ ORDER_ITEM : includes</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  CUSTOMER {</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    string id</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    string name</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    string email</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  ORDER {</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    string id</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    date orderDate</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    string status</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  PRODUCT {</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    string id</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    string name</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    float price</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  ORDER_ITEM {</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    int quantity</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    float price</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
