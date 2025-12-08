@@ -8,8 +8,12 @@ root/
     |── raw                 # Raw data use received from the source
         |── trips.csv       # 
         |── trucks.csv      #
-    |── #todo add folders once created            
-├── docs                    # Google Sheets API client
+    |── processed #cleaned version of data
+        |── trips.csv
+        |── trucks.csv
+        |── dim_date.csv
+        |── dim_time.csv           
+├── docs                    # 
     |── index.qmd           # Quartro source for the HTML report 
     |── index.html          # HTML report
     |── references.bib      # reference library used to generate the references
