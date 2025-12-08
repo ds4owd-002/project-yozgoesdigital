@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jos van der Ent">
-<meta name="dcterms.date" content="2025-12-07">
+<meta name="dcterms.date" content="2025-12-08">
 
 <title>Faecal sludge truck logistics analysis in Kampala, Uganda</title>
 <style>
@@ -109,21 +109,21 @@ div.csl-indent {
   <ul>
   <li><a href="#glossary" id="toc-glossary" class="nav-link active" data-scroll-target="#glossary">Glossary</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">2</span> Methods</a>
+  <li><a href="#methods-explore-the-raw-data" id="toc-methods-explore-the-raw-data" class="nav-link" data-scroll-target="#methods-explore-the-raw-data"><span class="header-section-number">2</span> METHODS: explore the raw data</a>
   <ul class="collapse">
   <li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries"><span class="header-section-number">2.1</span> Import libraries</a></li>
   <li><a href="#import-trips-data-from-fslogisticskampala" id="toc-import-trips-data-from-fslogisticskampala" class="nav-link" data-scroll-target="#import-trips-data-from-fslogisticskampala"><span class="header-section-number">2.2</span> Import trips data from ‘fslogisticskampala’</a></li>
   <li><a href="#import-trucks-data-from-fslogisticskampala" id="toc-import-trucks-data-from-fslogisticskampala" class="nav-link" data-scroll-target="#import-trucks-data-from-fslogisticskampala"><span class="header-section-number">2.3</span> Import trucks data from ‘fslogisticskampala’</a></li>
-  <li><a href="#checking-data-integrity" id="toc-checking-data-integrity" class="nav-link" data-scroll-target="#checking-data-integrity"><span class="header-section-number">2.4</span> Checking data integrity</a></li>
-  <li><a href="#organize-data-show-data-pipeline" id="toc-organize-data-show-data-pipeline" class="nav-link" data-scroll-target="#organize-data-show-data-pipeline"><span class="header-section-number">2.5</span> Organize data show data pipeline</a>
-  <ul class="collapse">
-  <li><a href="#write-data-into-folder-with-cleaned-data" id="toc-write-data-into-folder-with-cleaned-data" class="nav-link" data-scroll-target="#write-data-into-folder-with-cleaned-data"><span class="header-section-number">2.5.1</span> Write data into folder with cleaned data</a></li>
+  <li><a href="#import-dim_date" id="toc-import-dim_date" class="nav-link" data-scroll-target="#import-dim_date"><span class="header-section-number">2.4</span> Import dim_date</a></li>
+  <li><a href="#checking-data-integrity" id="toc-checking-data-integrity" class="nav-link" data-scroll-target="#checking-data-integrity"><span class="header-section-number">2.5</span> Checking data integrity</a></li>
   </ul></li>
-  </ul></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">3</span> Results</a>
+  <li><a href="#methods-generate-dataframe-for-analysis" id="toc-methods-generate-dataframe-for-analysis" class="nav-link" data-scroll-target="#methods-generate-dataframe-for-analysis"><span class="header-section-number">3</span> METHODS: Generate Dataframe for analysis</a>
   <ul class="collapse">
-  <li><a href="#organise-data-for-analysis" id="toc-organise-data-for-analysis" class="nav-link" data-scroll-target="#organise-data-for-analysis"><span class="header-section-number">3.1</span> Organise data for analysis</a></li>
-  <li><a href="#explore-data" id="toc-explore-data" class="nav-link" data-scroll-target="#explore-data"><span class="header-section-number">3.2</span> Explore data</a></li>
+  <li><a href="#write-data-into-folder-with-cleaned-data" id="toc-write-data-into-folder-with-cleaned-data" class="nav-link" data-scroll-target="#write-data-into-folder-with-cleaned-data"><span class="header-section-number">3.1</span> Write data into folder with cleaned data</a>
+  <ul class="collapse">
+  <li><a href="#trips" id="toc-trips" class="nav-link" data-scroll-target="#trips"><span class="header-section-number">3.1.1</span> trips</a></li>
+  <li><a href="#trucks" id="toc-trucks" class="nav-link" data-scroll-target="#trucks"><span class="header-section-number">3.1.2</span> trucks</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">4</span> Conclusions</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">5</span> References</a></li>
@@ -154,7 +154,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 7, 2025</p>
+      <p class="date">December 8, 2025</p>
     </div>
   </div>
   
@@ -187,8 +187,8 @@ div.csl-indent {
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>The ‘fslogisticskampala’ data set is shared on <a href="www.openwashdata.org">OpenWashdata</a> by Lars Shöbitz. The goal of this dataset is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience</p>
 </section>
-<section id="methods" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Methods</h1>
+<section id="methods-explore-the-raw-data" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> METHODS: explore the raw data</h1>
 <section id="import-libraries" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="import-libraries"><span class="header-section-number">2.1</span> Import libraries</h2>
 <p>First the required libraries need to be imported to be able to read and process the datasets.</p>
@@ -199,13 +199,14 @@ div.csl-indent {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="import-trips-data-from-fslogisticskampala" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="import-trips-data-from-fslogisticskampala"><span class="header-section-number">2.2</span> Import trips data from ‘fslogisticskampala’</h2>
-<p>The original set has 2 tables <span class="citation" data-cites="lars_schobitz_fslogisticskampala_2024"><span>“Fslogisticskampala: <span>Data</span> on Faecal Sludge; Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>”</span> (<a href="#ref-lars_schobitz_fslogisticskampala_2024" role="doc-biblioref">2024</a>)</span>. One set contains information of trips of faecal sludge collection trucks and the second table with metadata on of the trucks. First we start with opening the trips.csv</p>
+<p>The original set has 2 tables <span class="citation" data-cites="lars_schobitz_fslogisticskampala_2024"><span>“Fslogisticskampala: <span>Data</span> on Faecal Sludge; Transporting Logistics in <span>Kampala</span>, <span>Uganda</span>”</span> (<a href="#ref-lars_schobitz_fslogisticskampala_2024" role="doc-biblioref">2024</a>)</span>. One set contains information of trips of faecal sludge collection trucks and the second table with metadata on of the trucks. First we start with opening the trips.csv and save it as trips_raw.</p>
 <p>Read trips.csv:</p>
 <div class="cell">
 <details class="code-fold">
@@ -213,7 +214,7 @@ div.csl-indent {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trips_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trips.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>In the <a href="#tbl-trips-dictionary" class="quarto-xref">Table&nbsp;2.1</a> table #todo link table below</p>
+<p><a href="#tbl-trips-dictionary" class="quarto-xref">Table&nbsp;2.1</a> shows the dictionary of the trips dataset.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -227,23 +228,23 @@ Table&nbsp;2.1: Dictionary for trips table
 </figcaption>
 <div aria-describedby="tbl-trips-dictionary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="nzkynchdvc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#nzkynchdvc table {
+<div id="cgoypdmaii" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#cgoypdmaii table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nzkynchdvc thead, #nzkynchdvc tbody, #nzkynchdvc tfoot, #nzkynchdvc tr, #nzkynchdvc td, #nzkynchdvc th {
+#cgoypdmaii thead, #cgoypdmaii tbody, #cgoypdmaii tfoot, #cgoypdmaii tr, #cgoypdmaii td, #cgoypdmaii th {
   border-style: none;
 }
 
-#nzkynchdvc p {
+#cgoypdmaii p {
   margin: 0;
   padding: 0;
 }
 
-#nzkynchdvc .gt_table {
+#cgoypdmaii .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -269,12 +270,12 @@ Table&nbsp;2.1: Dictionary for trips table
   border-left-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_caption {
+#cgoypdmaii .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#nzkynchdvc .gt_title {
+#cgoypdmaii .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -286,7 +287,7 @@ Table&nbsp;2.1: Dictionary for trips table
   border-bottom-width: 0;
 }
 
-#nzkynchdvc .gt_subtitle {
+#cgoypdmaii .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -298,7 +299,7 @@ Table&nbsp;2.1: Dictionary for trips table
   border-top-width: 0;
 }
 
-#nzkynchdvc .gt_heading {
+#cgoypdmaii .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -310,13 +311,13 @@ Table&nbsp;2.1: Dictionary for trips table
   border-right-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_bottom_border {
+#cgoypdmaii .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_col_headings {
+#cgoypdmaii .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -331,7 +332,7 @@ Table&nbsp;2.1: Dictionary for trips table
   border-right-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_col_heading {
+#cgoypdmaii .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -351,7 +352,7 @@ Table&nbsp;2.1: Dictionary for trips table
   overflow-x: hidden;
 }
 
-#nzkynchdvc .gt_column_spanner_outer {
+#cgoypdmaii .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -363,15 +364,15 @@ Table&nbsp;2.1: Dictionary for trips table
   padding-right: 4px;
 }
 
-#nzkynchdvc .gt_column_spanner_outer:first-child {
+#cgoypdmaii .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nzkynchdvc .gt_column_spanner_outer:last-child {
+#cgoypdmaii .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nzkynchdvc .gt_column_spanner {
+#cgoypdmaii .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -383,11 +384,11 @@ Table&nbsp;2.1: Dictionary for trips table
   width: 100%;
 }
 
-#nzkynchdvc .gt_spanner_row {
+#cgoypdmaii .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#nzkynchdvc .gt_group_heading {
+#cgoypdmaii .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -413,7 +414,7 @@ Table&nbsp;2.1: Dictionary for trips table
   text-align: left;
 }
 
-#nzkynchdvc .gt_empty_group_heading {
+#cgoypdmaii .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -428,15 +429,15 @@ Table&nbsp;2.1: Dictionary for trips table
   vertical-align: middle;
 }
 
-#nzkynchdvc .gt_from_md > :first-child {
+#cgoypdmaii .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nzkynchdvc .gt_from_md > :last-child {
+#cgoypdmaii .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nzkynchdvc .gt_row {
+#cgoypdmaii .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -455,7 +456,7 @@ Table&nbsp;2.1: Dictionary for trips table
   overflow-x: hidden;
 }
 
-#nzkynchdvc .gt_stub {
+#cgoypdmaii .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -468,7 +469,7 @@ Table&nbsp;2.1: Dictionary for trips table
   padding-right: 5px;
 }
 
-#nzkynchdvc .gt_stub_row_group {
+#cgoypdmaii .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -482,15 +483,15 @@ Table&nbsp;2.1: Dictionary for trips table
   vertical-align: top;
 }
 
-#nzkynchdvc .gt_row_group_first td {
+#cgoypdmaii .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nzkynchdvc .gt_row_group_first th {
+#cgoypdmaii .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#nzkynchdvc .gt_summary_row {
+#cgoypdmaii .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -500,16 +501,16 @@ Table&nbsp;2.1: Dictionary for trips table
   padding-right: 5px;
 }
 
-#nzkynchdvc .gt_first_summary_row {
+#cgoypdmaii .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_first_summary_row.thick {
+#cgoypdmaii .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nzkynchdvc .gt_last_summary_row {
+#cgoypdmaii .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -519,7 +520,7 @@ Table&nbsp;2.1: Dictionary for trips table
   border-bottom-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_grand_summary_row {
+#cgoypdmaii .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -529,7 +530,7 @@ Table&nbsp;2.1: Dictionary for trips table
   padding-right: 5px;
 }
 
-#nzkynchdvc .gt_first_grand_summary_row {
+#cgoypdmaii .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -539,7 +540,7 @@ Table&nbsp;2.1: Dictionary for trips table
   border-top-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_last_grand_summary_row_top {
+#cgoypdmaii .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -549,11 +550,11 @@ Table&nbsp;2.1: Dictionary for trips table
   border-bottom-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_striped {
+#cgoypdmaii .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nzkynchdvc .gt_table_body {
+#cgoypdmaii .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -562,7 +563,7 @@ Table&nbsp;2.1: Dictionary for trips table
   border-bottom-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_footnotes {
+#cgoypdmaii .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -576,7 +577,7 @@ Table&nbsp;2.1: Dictionary for trips table
   border-right-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_footnote {
+#cgoypdmaii .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -585,7 +586,7 @@ Table&nbsp;2.1: Dictionary for trips table
   padding-right: 5px;
 }
 
-#nzkynchdvc .gt_sourcenotes {
+#cgoypdmaii .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -599,7 +600,7 @@ Table&nbsp;2.1: Dictionary for trips table
   border-right-color: #D3D3D3;
 }
 
-#nzkynchdvc .gt_sourcenote {
+#cgoypdmaii .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -607,72 +608,72 @@ Table&nbsp;2.1: Dictionary for trips table
   padding-right: 5px;
 }
 
-#nzkynchdvc .gt_left {
+#cgoypdmaii .gt_left {
   text-align: left;
 }
 
-#nzkynchdvc .gt_center {
+#cgoypdmaii .gt_center {
   text-align: center;
 }
 
-#nzkynchdvc .gt_right {
+#cgoypdmaii .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nzkynchdvc .gt_font_normal {
+#cgoypdmaii .gt_font_normal {
   font-weight: normal;
 }
 
-#nzkynchdvc .gt_font_bold {
+#cgoypdmaii .gt_font_bold {
   font-weight: bold;
 }
 
-#nzkynchdvc .gt_font_italic {
+#cgoypdmaii .gt_font_italic {
   font-style: italic;
 }
 
-#nzkynchdvc .gt_super {
+#cgoypdmaii .gt_super {
   font-size: 65%;
 }
 
-#nzkynchdvc .gt_footnote_marks {
+#cgoypdmaii .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#nzkynchdvc .gt_asterisk {
+#cgoypdmaii .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nzkynchdvc .gt_indent_1 {
+#cgoypdmaii .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nzkynchdvc .gt_indent_2 {
+#cgoypdmaii .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nzkynchdvc .gt_indent_3 {
+#cgoypdmaii .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nzkynchdvc .gt_indent_4 {
+#cgoypdmaii .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nzkynchdvc .gt_indent_5 {
+#cgoypdmaii .gt_indent_5 {
   text-indent: 25px;
 }
 
-#nzkynchdvc .katex-display {
+#cgoypdmaii .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#nzkynchdvc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#cgoypdmaii div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -730,18 +731,19 @@ Table&nbsp;2.1: Dictionary for trips table
 </figure>
 </div>
 </div>
+<p>From the dictionary it can be seen the trips data has information about the each recorded trip. Where the ’numberplate’column can be used as the foreign key to link to the truck dataset as described below.</p>
 </section>
 <section id="import-trucks-data-from-fslogisticskampala" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="import-trucks-data-from-fslogisticskampala"><span class="header-section-number">2.3</span> Import trucks data from ‘fslogisticskampala’</h2>
-<p>Read trucks.csv:</p>
+<p>The second dataset to import is the trucks data as published in the website. Read trucks.csv:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trucks <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trucks.csv"</span>)) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trucks_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/raw/trucks.csv"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>In <a href="#tbl-trucks-dictionary" class="quarto-xref">Table&nbsp;2.2</a> the data from the trucks data set is described.</p>
+<p><a href="#tbl-trucks-dictionary" class="quarto-xref">Table&nbsp;2.2</a> shows the dictionary of the trucks set. This is a more simpel table containing meta data on the truck. It only contains 2 variables. The first is the ‘numberplate’ which can function as key to link to the trips dataset and the second variable is the volume of the specific truck in m3.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -750,28 +752,28 @@ Table&nbsp;2.1: Dictionary for trips table
 </details>
 <div id="tbl-trucks-dictionary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-trucks-dictionary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.2
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-trucks-dictionary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.2: Dictionary for trucks table
 </figcaption>
 <div aria-describedby="tbl-trucks-dictionary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="yaqninawnl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yaqninawnl table {
+<div id="ebxcdfsakp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ebxcdfsakp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yaqninawnl thead, #yaqninawnl tbody, #yaqninawnl tfoot, #yaqninawnl tr, #yaqninawnl td, #yaqninawnl th {
+#ebxcdfsakp thead, #ebxcdfsakp tbody, #ebxcdfsakp tfoot, #ebxcdfsakp tr, #ebxcdfsakp td, #ebxcdfsakp th {
   border-style: none;
 }
 
-#yaqninawnl p {
+#ebxcdfsakp p {
   margin: 0;
   padding: 0;
 }
 
-#yaqninawnl .gt_table {
+#ebxcdfsakp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -797,12 +799,12 @@ Table&nbsp;2.2
   border-left-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_caption {
+#ebxcdfsakp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yaqninawnl .gt_title {
+#ebxcdfsakp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -814,7 +816,7 @@ Table&nbsp;2.2
   border-bottom-width: 0;
 }
 
-#yaqninawnl .gt_subtitle {
+#ebxcdfsakp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -826,7 +828,7 @@ Table&nbsp;2.2
   border-top-width: 0;
 }
 
-#yaqninawnl .gt_heading {
+#ebxcdfsakp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -838,13 +840,13 @@ Table&nbsp;2.2
   border-right-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_bottom_border {
+#ebxcdfsakp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_col_headings {
+#ebxcdfsakp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -859,7 +861,7 @@ Table&nbsp;2.2
   border-right-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_col_heading {
+#ebxcdfsakp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -879,7 +881,7 @@ Table&nbsp;2.2
   overflow-x: hidden;
 }
 
-#yaqninawnl .gt_column_spanner_outer {
+#ebxcdfsakp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -891,15 +893,15 @@ Table&nbsp;2.2
   padding-right: 4px;
 }
 
-#yaqninawnl .gt_column_spanner_outer:first-child {
+#ebxcdfsakp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yaqninawnl .gt_column_spanner_outer:last-child {
+#ebxcdfsakp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yaqninawnl .gt_column_spanner {
+#ebxcdfsakp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -911,11 +913,11 @@ Table&nbsp;2.2
   width: 100%;
 }
 
-#yaqninawnl .gt_spanner_row {
+#ebxcdfsakp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yaqninawnl .gt_group_heading {
+#ebxcdfsakp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -941,7 +943,7 @@ Table&nbsp;2.2
   text-align: left;
 }
 
-#yaqninawnl .gt_empty_group_heading {
+#ebxcdfsakp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -956,15 +958,15 @@ Table&nbsp;2.2
   vertical-align: middle;
 }
 
-#yaqninawnl .gt_from_md > :first-child {
+#ebxcdfsakp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yaqninawnl .gt_from_md > :last-child {
+#ebxcdfsakp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yaqninawnl .gt_row {
+#ebxcdfsakp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -983,7 +985,7 @@ Table&nbsp;2.2
   overflow-x: hidden;
 }
 
-#yaqninawnl .gt_stub {
+#ebxcdfsakp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -996,7 +998,7 @@ Table&nbsp;2.2
   padding-right: 5px;
 }
 
-#yaqninawnl .gt_stub_row_group {
+#ebxcdfsakp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1010,15 +1012,15 @@ Table&nbsp;2.2
   vertical-align: top;
 }
 
-#yaqninawnl .gt_row_group_first td {
+#ebxcdfsakp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yaqninawnl .gt_row_group_first th {
+#ebxcdfsakp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yaqninawnl .gt_summary_row {
+#ebxcdfsakp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1028,16 +1030,16 @@ Table&nbsp;2.2
   padding-right: 5px;
 }
 
-#yaqninawnl .gt_first_summary_row {
+#ebxcdfsakp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_first_summary_row.thick {
+#ebxcdfsakp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yaqninawnl .gt_last_summary_row {
+#ebxcdfsakp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1047,7 +1049,7 @@ Table&nbsp;2.2
   border-bottom-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_grand_summary_row {
+#ebxcdfsakp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1057,7 +1059,7 @@ Table&nbsp;2.2
   padding-right: 5px;
 }
 
-#yaqninawnl .gt_first_grand_summary_row {
+#ebxcdfsakp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1067,7 +1069,7 @@ Table&nbsp;2.2
   border-top-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_last_grand_summary_row_top {
+#ebxcdfsakp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1077,11 +1079,11 @@ Table&nbsp;2.2
   border-bottom-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_striped {
+#ebxcdfsakp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yaqninawnl .gt_table_body {
+#ebxcdfsakp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1090,7 +1092,7 @@ Table&nbsp;2.2
   border-bottom-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_footnotes {
+#ebxcdfsakp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1104,7 +1106,7 @@ Table&nbsp;2.2
   border-right-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_footnote {
+#ebxcdfsakp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1113,7 +1115,7 @@ Table&nbsp;2.2
   padding-right: 5px;
 }
 
-#yaqninawnl .gt_sourcenotes {
+#ebxcdfsakp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1127,7 +1129,7 @@ Table&nbsp;2.2
   border-right-color: #D3D3D3;
 }
 
-#yaqninawnl .gt_sourcenote {
+#ebxcdfsakp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1135,77 +1137,77 @@ Table&nbsp;2.2
   padding-right: 5px;
 }
 
-#yaqninawnl .gt_left {
+#ebxcdfsakp .gt_left {
   text-align: left;
 }
 
-#yaqninawnl .gt_center {
+#ebxcdfsakp .gt_center {
   text-align: center;
 }
 
-#yaqninawnl .gt_right {
+#ebxcdfsakp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yaqninawnl .gt_font_normal {
+#ebxcdfsakp .gt_font_normal {
   font-weight: normal;
 }
 
-#yaqninawnl .gt_font_bold {
+#ebxcdfsakp .gt_font_bold {
   font-weight: bold;
 }
 
-#yaqninawnl .gt_font_italic {
+#ebxcdfsakp .gt_font_italic {
   font-style: italic;
 }
 
-#yaqninawnl .gt_super {
+#ebxcdfsakp .gt_super {
   font-size: 65%;
 }
 
-#yaqninawnl .gt_footnote_marks {
+#ebxcdfsakp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yaqninawnl .gt_asterisk {
+#ebxcdfsakp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yaqninawnl .gt_indent_1 {
+#ebxcdfsakp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yaqninawnl .gt_indent_2 {
+#ebxcdfsakp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yaqninawnl .gt_indent_3 {
+#ebxcdfsakp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yaqninawnl .gt_indent_4 {
+#ebxcdfsakp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yaqninawnl .gt_indent_5 {
+#ebxcdfsakp .gt_indent_5 {
   text-indent: 25px;
 }
 
-#yaqninawnl .katex-display {
+#ebxcdfsakp .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#yaqninawnl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ebxcdfsakp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table do-not-create-environment caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="variable_name" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable_name</th>
@@ -1234,210 +1236,1118 @@ Table&nbsp;2.2
 </div>
 </div>
 </section>
-<section id="checking-data-integrity" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="checking-data-integrity"><span class="header-section-number">2.4</span> Checking data integrity</h2>
-<p>trips summary check</p>
-<p>In order to understand the data first we will check the raw data.</p>
+<section id="import-dim_date" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="import-dim_date"><span class="header-section-number">2.4</span> Import dim_date</h2>
+<p>In order to aid analysis a additional table is generated and imported. This table has a daily geranuality and contains time intelligence information for the data collection period.</p>
 </section>
-<section id="organize-data-show-data-pipeline" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="organize-data-show-data-pipeline"><span class="header-section-number">2.5</span> Organize data show data pipeline</h2>
-<p>Cleaning steps</p>
-<section id="write-data-into-folder-with-cleaned-data" class="level3" data-number="2.5.1">
-<h3 data-number="2.5.1" class="anchored" data-anchor-id="write-data-into-folder-with-cleaned-data"><span class="header-section-number">2.5.1</span> Write data into folder with cleaned data</h3>
-<p>trips</p>
+<section id="checking-data-integrity" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="checking-data-integrity"><span class="header-section-number">2.5</span> Checking data integrity</h2>
+<p>In order to understand the data we will first asses the raw data. First we will count all non NA values for each column (see <a href="#tbl-count-trips" class="quarto-xref">Table&nbsp;2.3</a>. In total 5663 records are in the dataset and it can be seen each column has no NA values.</p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># trips_tbl_sum &lt;- trips_raw |&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colSums</span>(<span class="sc">!</span><span class="fu">is.na</span>(trips_raw))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-count-trips" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-count-trips-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.3: Count of
+</figcaption>
+<div aria-describedby="tbl-count-trips-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code>        fid numberplate        date        time         lat         lon 
+       5653        5653        5653        5653        5653        5653 
+      plant 
+       5653 </code></pre>
+</div>
+</div>
+</figure>
+</div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trips_raw <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/processed/trips.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>trips_raw <span class="sc">|&gt;</span> <span class="fu">tbl_summary</span>(numberplate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following errors were returned during `tbl_summary()`:
+✖ For variable `date` (`numberplate = "UAG 341F"`) and "p25" statistic: * not
+  defined for "Date" objects
+✖ For variable `date` (`numberplate = "UAG 448X"`) and "p25" statistic: * not
+  defined for "Date" objects
+✖ For variable `date` (`numberplate = "UAL 487Z"`) and "p25" and "p75"
+  statistics: * not defined for "Date" objects
+✖ For variable `date` (`numberplate = "UAT 767H"`) and "p25" and "p75"
+  statistics: * not defined for "Date" objects</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="yuxedgbcfu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yuxedgbcfu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#yuxedgbcfu thead, #yuxedgbcfu tbody, #yuxedgbcfu tfoot, #yuxedgbcfu tr, #yuxedgbcfu td, #yuxedgbcfu th {
+  border-style: none;
+}
+
+#yuxedgbcfu p {
+  margin: 0;
+  padding: 0;
+}
+
+#yuxedgbcfu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#yuxedgbcfu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yuxedgbcfu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yuxedgbcfu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yuxedgbcfu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yuxedgbcfu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yuxedgbcfu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yuxedgbcfu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yuxedgbcfu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#yuxedgbcfu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#yuxedgbcfu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yuxedgbcfu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yuxedgbcfu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yuxedgbcfu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yuxedgbcfu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yuxedgbcfu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#yuxedgbcfu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#yuxedgbcfu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#yuxedgbcfu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yuxedgbcfu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#yuxedgbcfu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yuxedgbcfu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yuxedgbcfu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yuxedgbcfu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yuxedgbcfu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yuxedgbcfu .gt_left {
+  text-align: left;
+}
+
+#yuxedgbcfu .gt_center {
+  text-align: center;
+}
+
+#yuxedgbcfu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yuxedgbcfu .gt_font_normal {
+  font-weight: normal;
+}
+
+#yuxedgbcfu .gt_font_bold {
+  font-weight: bold;
+}
+
+#yuxedgbcfu .gt_font_italic {
+  font-style: italic;
+}
+
+#yuxedgbcfu .gt_super {
+  font-size: 65%;
+}
+
+#yuxedgbcfu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#yuxedgbcfu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#yuxedgbcfu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#yuxedgbcfu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#yuxedgbcfu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#yuxedgbcfu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#yuxedgbcfu .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#yuxedgbcfu .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#yuxedgbcfu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+</colgroup>
+<thead>
+<tr class="gt_col_headings header">
+<th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
+<th id="stat_1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>AUS 088V</strong><br>
+N = 95<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>AUS 119X</strong><br>
+N = 235<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_3" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>AUS 892G</strong><br>
+N = 128<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_4" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>LG 0257-01</strong><br>
+N = 198<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_5" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>LG 0366-01</strong><br>
+N = 216<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_6" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>LG 0401-01</strong><br>
+N = 153<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_7" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAA 379Z</strong><br>
+N = 113<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_8" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAG 341F</strong><br>
+N = 140<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_9" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAG 448X</strong><br>
+N = 172<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_10" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAH 027T</strong><br>
+N = 108<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_11" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAH 706D</strong><br>
+N = 3<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_12" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAJ 866Z</strong><br>
+N = 176<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_13" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAJ 874D</strong><br>
+N = 109<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_14" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAL 487Z</strong><br>
+N = 148<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_15" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAL 915H</strong><br>
+N = 150<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_16" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAN 003D</strong><br>
+N = 178<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_17" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAN 030N</strong><br>
+N = 173<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_18" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAN 087N</strong><br>
+N = 218<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_19" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAP 947B</strong><br>
+N = 90<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_20" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAQ 024L</strong><br>
+N = 286<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_21" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAQ 981Z</strong><br>
+N = 285<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_22" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAS 088V</strong><br>
+N = 32<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_23" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAS 892G</strong><br>
+N = 14<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_24" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAT 112M</strong><br>
+N = 106<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_25" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAT 598T</strong><br>
+N = 315<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_26" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAT 767H</strong><br>
+N = 196<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_27" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAT 845E</strong><br>
+N = 254<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_28" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAU 189B</strong><br>
+N = 267<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_29" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAU 930D</strong><br>
+N = 185<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_30" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAU 939C</strong><br>
+N = 132<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_31" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAV 037R</strong><br>
+N = 271<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_32" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAV 418C</strong><br>
+N = 157<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_33" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAV 754B</strong><br>
+N = 98<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_34" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UAW 274Y</strong><br>
+N = 107<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_35" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>UCS 701</strong><br>
+N = 145<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">fid</td>
+<td class="gt_row gt_center" headers="stat_1">3,590 (3,090, 4,534)</td>
+<td class="gt_row gt_center" headers="stat_2">2,881 (842, 4,405)</td>
+<td class="gt_row gt_center" headers="stat_3">2,473 (1,695, 4,223)</td>
+<td class="gt_row gt_center" headers="stat_4">5,183 (5,085, 5,401)</td>
+<td class="gt_row gt_center" headers="stat_5">5,322 (5,219, 5,490)</td>
+<td class="gt_row gt_center" headers="stat_6">5,363 (5,281, 5,536)</td>
+<td class="gt_row gt_center" headers="stat_7">781 (334, 1,753)</td>
+<td class="gt_row gt_center" headers="stat_8">2,362 (1,080, 3,145)</td>
+<td class="gt_row gt_center" headers="stat_9">2,536 (1,397, 4,461)</td>
+<td class="gt_row gt_center" headers="stat_10">1,625 (1,092, 3,153)</td>
+<td class="gt_row gt_center" headers="stat_11">3,173 (3,172, 3,174)</td>
+<td class="gt_row gt_center" headers="stat_12">2,412 (1,113, 3,660)</td>
+<td class="gt_row gt_center" headers="stat_13">2,560 (2,036, 4,483)</td>
+<td class="gt_row gt_center" headers="stat_14">2,428 (1,636, 3,678)</td>
+<td class="gt_row gt_center" headers="stat_15">3,313 (1,770, 3,818)</td>
+<td class="gt_row gt_center" headers="stat_16">2,822 (809, 3,358)</td>
+<td class="gt_row gt_center" headers="stat_17">2,592 (1,447, 3,546)</td>
+<td class="gt_row gt_center" headers="stat_18">2,623 (1,001, 4,043)</td>
+<td class="gt_row gt_center" headers="stat_19">1,279 (820, 1,812)</td>
+<td class="gt_row gt_center" headers="stat_20">3,727 (1,917, 4,213)</td>
+<td class="gt_row gt_center" headers="stat_21">2,866 (1,855, 4,270)</td>
+<td class="gt_row gt_center" headers="stat_22">2,648 (2,640, 2,656)</td>
+<td class="gt_row gt_center" headers="stat_23">3,262 (3,258, 3,265)</td>
+<td class="gt_row gt_center" headers="stat_24">2,128 (557, 4,084)</td>
+<td class="gt_row gt_center" headers="stat_25">1,896 (865, 3,411)</td>
+<td class="gt_row gt_center" headers="stat_26">2,676 (2,157, 3,599)</td>
+<td class="gt_row gt_center" headers="stat_27">3,290 (1,735, 4,263)</td>
+<td class="gt_row gt_center" headers="stat_28">2,981 (898, 3,979)</td>
+<td class="gt_row gt_center" headers="stat_29">2,994 (926, 3,994)</td>
+<td class="gt_row gt_center" headers="stat_30">3,032 (941, 4,311)</td>
+<td class="gt_row gt_center" headers="stat_31">2,451 (1,175, 3,709)</td>
+<td class="gt_row gt_center" headers="stat_32">2,239 (584, 3,628)</td>
+<td class="gt_row gt_center" headers="stat_33">2,255 (1,563, 2,279)</td>
+<td class="gt_row gt_center" headers="stat_34">2,227 (2,200, 2,728)</td>
+<td class="gt_row gt_center" headers="stat_35">2,331 (1,578, 2,771)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">date</td>
+<td class="gt_row gt_center" headers="stat_1">2015-06-04 (2015-05-26, 2015-06-13)</td>
+<td class="gt_row gt_center" headers="stat_2">2015-05-21 (2015-04-26, 2015-06-09)</td>
+<td class="gt_row gt_center" headers="stat_3">2015-05-08 (2015-04-30, 2015-06-05)</td>
+<td class="gt_row gt_center" headers="stat_4">2015-05-30 (2015-05-24, 2015-06-03)</td>
+<td class="gt_row gt_center" headers="stat_5">2015-06-05 (2015-05-29, 2015-06-14)</td>
+<td class="gt_row gt_center" headers="stat_6">2015-06-05 (2015-05-31, 2015-06-10)</td>
+<td class="gt_row gt_center" headers="stat_7">2015-04-25 (2015-04-08, 2015-05-07)</td>
+<td class="gt_row gt_center" headers="stat_8">2015-05-07 (NA, 2015-05-23)</td>
+<td class="gt_row gt_center" headers="stat_9">2015-05-19 (NA, 2015-06-11)</td>
+<td class="gt_row gt_center" headers="stat_10">2015-05-05 (2015-04-28, 2015-05-21)</td>
+<td class="gt_row gt_center" headers="stat_11">2015-05-25 (2015-05-20, 2015-05-25)</td>
+<td class="gt_row gt_center" headers="stat_12">2015-05-13 (2015-04-27, 2015-05-31)</td>
+<td class="gt_row gt_center" headers="stat_13">2015-05-13 (2015-05-08, 2015-06-07)</td>
+<td class="gt_row gt_center" headers="stat_14">2015-05-11 (NA, NA)</td>
+<td class="gt_row gt_center" headers="stat_15">2015-05-26 (2015-05-08, 2015-06-06)</td>
+<td class="gt_row gt_center" headers="stat_16">2015-05-19 (2015-04-26, 2015-06-01)</td>
+<td class="gt_row gt_center" headers="stat_17">2015-05-16 (2015-05-06, 2015-06-04)</td>
+<td class="gt_row gt_center" headers="stat_18">2015-05-18 (2015-04-29, 2015-06-04)</td>
+<td class="gt_row gt_center" headers="stat_19">2015-05-03 (2015-04-22, 2015-05-10)</td>
+<td class="gt_row gt_center" headers="stat_20">2015-05-28 (2015-04-29, 2015-06-07)</td>
+<td class="gt_row gt_center" headers="stat_21">2015-05-23 (2015-05-08, 2015-06-07)</td>
+<td class="gt_row gt_center" headers="stat_22">2015-05-11 (2015-05-09, 2015-05-12)</td>
+<td class="gt_row gt_center" headers="stat_23">2015-05-22 (2015-05-21, 2015-05-24)</td>
+<td class="gt_row gt_center" headers="stat_24">2015-05-07 (2015-04-17, 2015-06-08)</td>
+<td class="gt_row gt_center" headers="stat_25">2015-05-07 (2015-04-23, 2015-05-26)</td>
+<td class="gt_row gt_center" headers="stat_26">2015-05-16 (NA, NA)</td>
+<td class="gt_row gt_center" headers="stat_27">2015-05-22 (2015-04-30, 2015-06-06)</td>
+<td class="gt_row gt_center" headers="stat_28">2015-05-14 (2015-04-21, 2015-06-06)</td>
+<td class="gt_row gt_center" headers="stat_29">2015-05-18 (2015-04-25, 2015-06-02)</td>
+<td class="gt_row gt_center" headers="stat_30">2015-05-21 (2015-04-24, 2015-06-09)</td>
+<td class="gt_row gt_center" headers="stat_31">2015-05-09 (2015-04-23, 2015-06-01)</td>
+<td class="gt_row gt_center" headers="stat_32">2015-05-13 (2015-04-23, 2015-06-04)</td>
+<td class="gt_row gt_center" headers="stat_33">2015-05-08 (2015-05-05, 2015-05-11)</td>
+<td class="gt_row gt_center" headers="stat_34">2015-05-13 (2015-05-07, 2015-05-18)</td>
+<td class="gt_row gt_center" headers="stat_35">2015-05-10 (2015-05-03, 2015-05-15)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">time</td>
+<td class="gt_row gt_center" headers="stat_1">39,544 secs (30,859 secs, 47,341 secs)</td>
+<td class="gt_row gt_center" headers="stat_2">36,583 secs (28,496 secs, 44,218 secs)</td>
+<td class="gt_row gt_center" headers="stat_3">39,695 secs (28,962 secs, 48,068 secs)</td>
+<td class="gt_row gt_center" headers="stat_4">37,759 secs (27,696 secs, 48,954 secs)</td>
+<td class="gt_row gt_center" headers="stat_5">30,034 secs (23,508 secs, 36,972 secs)</td>
+<td class="gt_row gt_center" headers="stat_6">36,735 secs (28,420 secs, 45,910 secs)</td>
+<td class="gt_row gt_center" headers="stat_7">36,106 secs (28,785 secs, 45,747 secs)</td>
+<td class="gt_row gt_center" headers="stat_8">38,400 secs (27,231 secs, 48,430 secs)</td>
+<td class="gt_row gt_center" headers="stat_9">39,771 secs (27,960 secs, 48,634 secs)</td>
+<td class="gt_row gt_center" headers="stat_10">41,442 secs (30,856 secs, 51,503 secs)</td>
+<td class="gt_row gt_center" headers="stat_11">35,620 secs (28,309 secs, 53,844 secs)</td>
+<td class="gt_row gt_center" headers="stat_12">38,552 secs (28,290 secs, 46,966 secs)</td>
+<td class="gt_row gt_center" headers="stat_13">40,376 secs (32,128 secs, 47,995 secs)</td>
+<td class="gt_row gt_center" headers="stat_14">41,784 secs (34,112 secs, 50,262 secs)</td>
+<td class="gt_row gt_center" headers="stat_15">41,451 secs (28,753 secs, 53,473 secs)</td>
+<td class="gt_row gt_center" headers="stat_16">36,490 secs (27,829 secs, 45,116 secs)</td>
+<td class="gt_row gt_center" headers="stat_17">37,817 secs (26,599 secs, 49,650 secs)</td>
+<td class="gt_row gt_center" headers="stat_18">38,168 secs (29,714 secs, 48,218 secs)</td>
+<td class="gt_row gt_center" headers="stat_19">40,351 secs (27,604 secs, 50,971 secs)</td>
+<td class="gt_row gt_center" headers="stat_20">38,534 secs (29,297 secs, 48,790 secs)</td>
+<td class="gt_row gt_center" headers="stat_21">40,033 secs (28,588 secs, 51,134 secs)</td>
+<td class="gt_row gt_center" headers="stat_22">36,802 secs (28,133 secs, 48,025 secs)</td>
+<td class="gt_row gt_center" headers="stat_23">41,190 secs (35,880 secs, 48,702 secs)</td>
+<td class="gt_row gt_center" headers="stat_24">35,939 secs (28,098 secs, 44,542 secs)</td>
+<td class="gt_row gt_center" headers="stat_25">38,098 secs (26,857 secs, 47,342 secs)</td>
+<td class="gt_row gt_center" headers="stat_26">38,383 secs (29,734 secs, 47,558 secs)</td>
+<td class="gt_row gt_center" headers="stat_27">39,209 secs (31,142 secs, 48,553 secs)</td>
+<td class="gt_row gt_center" headers="stat_28">38,628 secs (30,400 secs, 47,292 secs)</td>
+<td class="gt_row gt_center" headers="stat_29">32,600 secs (25,713 secs, 42,998 secs)</td>
+<td class="gt_row gt_center" headers="stat_30">35,944 secs (30,910 secs, 45,148 secs)</td>
+<td class="gt_row gt_center" headers="stat_31">38,103 secs (29,677 secs, 46,585 secs)</td>
+<td class="gt_row gt_center" headers="stat_32">41,720 secs (35,888 secs, 49,851 secs)</td>
+<td class="gt_row gt_center" headers="stat_33">38,905 secs (25,469 secs, 46,994 secs)</td>
+<td class="gt_row gt_center" headers="stat_34">40,066 secs (29,995 secs, 49,753 secs)</td>
+<td class="gt_row gt_center" headers="stat_35">35,121 secs (28,683 secs, 44,870 secs)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">lat</td>
+<td class="gt_row gt_center" headers="stat_1">0.37 (0.31, 0.49)</td>
+<td class="gt_row gt_center" headers="stat_2">0.35 (0.32, 0.39)</td>
+<td class="gt_row gt_center" headers="stat_3">0.36 (0.32, 0.36)</td>
+<td class="gt_row gt_center" headers="stat_4">0.31 (0.30, 0.33)</td>
+<td class="gt_row gt_center" headers="stat_5">0.33 (0.32, 0.33)</td>
+<td class="gt_row gt_center" headers="stat_6">0.30 (0.29, 0.32)</td>
+<td class="gt_row gt_center" headers="stat_7">0.29 (0.28, 0.34)</td>
+<td class="gt_row gt_center" headers="stat_8">0.33 (0.30, 0.36)</td>
+<td class="gt_row gt_center" headers="stat_9">0.31 (0.30, 0.33)</td>
+<td class="gt_row gt_center" headers="stat_10">0.29 (0.27, 0.30)</td>
+<td class="gt_row gt_center" headers="stat_11">0.32 (0.28, 0.33)</td>
+<td class="gt_row gt_center" headers="stat_12">0.33 (0.30, 0.35)</td>
+<td class="gt_row gt_center" headers="stat_13">0.32 (0.29, 0.35)</td>
+<td class="gt_row gt_center" headers="stat_14">0.33 (0.30, 0.35)</td>
+<td class="gt_row gt_center" headers="stat_15">0.30 (0.29, 0.30)</td>
+<td class="gt_row gt_center" headers="stat_16">0.30 (0.27, 0.34)</td>
+<td class="gt_row gt_center" headers="stat_17">0.32 (0.31, 0.35)</td>
+<td class="gt_row gt_center" headers="stat_18">0.32 (0.31, 0.34)</td>
+<td class="gt_row gt_center" headers="stat_19">0.28 (0.27, 0.31)</td>
+<td class="gt_row gt_center" headers="stat_20">0.31 (0.28, 0.34)</td>
+<td class="gt_row gt_center" headers="stat_21">0.31 (0.28, 0.33)</td>
+<td class="gt_row gt_center" headers="stat_22">0.36 (0.30, 0.38)</td>
+<td class="gt_row gt_center" headers="stat_23">0.36 (0.35, 0.37)</td>
+<td class="gt_row gt_center" headers="stat_24">0.30 (0.30, 0.31)</td>
+<td class="gt_row gt_center" headers="stat_25">0.29 (0.24, 0.30)</td>
+<td class="gt_row gt_center" headers="stat_26">0.30 (0.29, 0.35)</td>
+<td class="gt_row gt_center" headers="stat_27">0.36 (0.35, 0.36)</td>
+<td class="gt_row gt_center" headers="stat_28">0.32 (0.29, 0.35)</td>
+<td class="gt_row gt_center" headers="stat_29">0.30 (0.30, 0.32)</td>
+<td class="gt_row gt_center" headers="stat_30">0.30 (0.27, 0.34)</td>
+<td class="gt_row gt_center" headers="stat_31">0.35 (0.32, 0.36)</td>
+<td class="gt_row gt_center" headers="stat_32">0.32 (0.31, 0.35)</td>
+<td class="gt_row gt_center" headers="stat_33">0.30 (0.28, 0.31)</td>
+<td class="gt_row gt_center" headers="stat_34">0.30 (0.29, 0.32)</td>
+<td class="gt_row gt_center" headers="stat_35">0.34 (0.29, 0.36)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">lon</td>
+<td class="gt_row gt_center" headers="stat_1">32.65 (32.60, 33.21)</td>
+<td class="gt_row gt_center" headers="stat_2">32.57 (32.57, 32.59)</td>
+<td class="gt_row gt_center" headers="stat_3">32.60 (32.57, 32.69)</td>
+<td class="gt_row gt_center" headers="stat_4">32.56 (32.54, 32.56)</td>
+<td class="gt_row gt_center" headers="stat_5">32.61 (32.61, 32.62)</td>
+<td class="gt_row gt_center" headers="stat_6">32.60 (32.58, 32.61)</td>
+<td class="gt_row gt_center" headers="stat_7">32.56 (32.54, 32.59)</td>
+<td class="gt_row gt_center" headers="stat_8">32.56 (32.53, 32.62)</td>
+<td class="gt_row gt_center" headers="stat_9">32.64 (32.62, 32.65)</td>
+<td class="gt_row gt_center" headers="stat_10">32.57 (32.55, 32.58)</td>
+<td class="gt_row gt_center" headers="stat_11">32.55 (32.54, 32.56)</td>
+<td class="gt_row gt_center" headers="stat_12">32.58 (32.53, 32.62)</td>
+<td class="gt_row gt_center" headers="stat_13">32.62 (32.59, 32.65)</td>
+<td class="gt_row gt_center" headers="stat_14">32.57 (32.56, 32.59)</td>
+<td class="gt_row gt_center" headers="stat_15">32.55 (32.55, 32.56)</td>
+<td class="gt_row gt_center" headers="stat_16">32.57 (32.55, 32.59)</td>
+<td class="gt_row gt_center" headers="stat_17">32.64 (32.60, 32.65)</td>
+<td class="gt_row gt_center" headers="stat_18">32.63 (32.60, 32.64)</td>
+<td class="gt_row gt_center" headers="stat_19">32.55 (32.55, 32.56)</td>
+<td class="gt_row gt_center" headers="stat_20">32.57 (32.55, 32.59)</td>
+<td class="gt_row gt_center" headers="stat_21">32.58 (32.56, 32.63)</td>
+<td class="gt_row gt_center" headers="stat_22">32.64 (32.61, 32.65)</td>
+<td class="gt_row gt_center" headers="stat_23">32.59 (32.57, 32.63)</td>
+<td class="gt_row gt_center" headers="stat_24">32.64 (32.64, 32.64)</td>
+<td class="gt_row gt_center" headers="stat_25">32.56 (32.55, 32.58)</td>
+<td class="gt_row gt_center" headers="stat_26">32.60 (32.57, 32.63)</td>
+<td class="gt_row gt_center" headers="stat_27">32.56 (32.55, 32.57)</td>
+<td class="gt_row gt_center" headers="stat_28">32.56 (32.55, 32.57)</td>
+<td class="gt_row gt_center" headers="stat_29">32.54 (32.53, 32.57)</td>
+<td class="gt_row gt_center" headers="stat_30">32.55 (32.46, 32.58)</td>
+<td class="gt_row gt_center" headers="stat_31">32.56 (32.55, 32.59)</td>
+<td class="gt_row gt_center" headers="stat_32">32.63 (32.60, 32.64)</td>
+<td class="gt_row gt_center" headers="stat_33">32.60 (32.57, 32.60)</td>
+<td class="gt_row gt_center" headers="stat_34">32.57 (32.55, 32.62)</td>
+<td class="gt_row gt_center" headers="stat_35">32.62 (32.56, 32.69)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">plant</td>
+<td class="gt_row gt_center" headers="stat_1"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_2"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_3"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_4"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_5"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_6"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_7"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_8"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_9"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_10"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_11"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_12"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_13"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_14"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_15"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_16"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_17"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_18"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_19"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_20"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_21"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_22"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_23"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_24"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_25"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_26"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_27"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_28"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_29"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_30"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_31"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_32"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_33"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_34"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_35"><br>
+</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Bugolobi</td>
+<td class="gt_row gt_center" headers="stat_1">95 (100%)</td>
+<td class="gt_row gt_center" headers="stat_2">235 (100%)</td>
+<td class="gt_row gt_center" headers="stat_3">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_4">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_5">216 (100%)</td>
+<td class="gt_row gt_center" headers="stat_6">153 (100%)</td>
+<td class="gt_row gt_center" headers="stat_7">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_8">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_9">172 (100%)</td>
+<td class="gt_row gt_center" headers="stat_10">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_11">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_12">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_13">109 (100%)</td>
+<td class="gt_row gt_center" headers="stat_14">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_15">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_16">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_17">173 (100%)</td>
+<td class="gt_row gt_center" headers="stat_18">218 (100%)</td>
+<td class="gt_row gt_center" headers="stat_19">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_20">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_21">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_22">32 (100%)</td>
+<td class="gt_row gt_center" headers="stat_23">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_24">106 (100%)</td>
+<td class="gt_row gt_center" headers="stat_25">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_26">196 (100%)</td>
+<td class="gt_row gt_center" headers="stat_27">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_28">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_29">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_30">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_31">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_32">157 (100%)</td>
+<td class="gt_row gt_center" headers="stat_33">98 (100%)</td>
+<td class="gt_row gt_center" headers="stat_34">107 (100%)</td>
+<td class="gt_row gt_center" headers="stat_35">145 (100%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Lubigi</td>
+<td class="gt_row gt_center" headers="stat_1">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_2">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_3">128 (100%)</td>
+<td class="gt_row gt_center" headers="stat_4">198 (100%)</td>
+<td class="gt_row gt_center" headers="stat_5">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_6">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_7">113 (100%)</td>
+<td class="gt_row gt_center" headers="stat_8">140 (100%)</td>
+<td class="gt_row gt_center" headers="stat_9">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_10">108 (100%)</td>
+<td class="gt_row gt_center" headers="stat_11">3 (100%)</td>
+<td class="gt_row gt_center" headers="stat_12">176 (100%)</td>
+<td class="gt_row gt_center" headers="stat_13">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_14">148 (100%)</td>
+<td class="gt_row gt_center" headers="stat_15">150 (100%)</td>
+<td class="gt_row gt_center" headers="stat_16">178 (100%)</td>
+<td class="gt_row gt_center" headers="stat_17">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_18">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_19">90 (100%)</td>
+<td class="gt_row gt_center" headers="stat_20">286 (100%)</td>
+<td class="gt_row gt_center" headers="stat_21">285 (100%)</td>
+<td class="gt_row gt_center" headers="stat_22">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_23">14 (100%)</td>
+<td class="gt_row gt_center" headers="stat_24">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_25">315 (100%)</td>
+<td class="gt_row gt_center" headers="stat_26">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_27">254 (100%)</td>
+<td class="gt_row gt_center" headers="stat_28">267 (100%)</td>
+<td class="gt_row gt_center" headers="stat_29">185 (100%)</td>
+<td class="gt_row gt_center" headers="stat_30">132 (100%)</td>
+<td class="gt_row gt_center" headers="stat_31">271 (100%)</td>
+<td class="gt_row gt_center" headers="stat_32">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_33">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_34">0 (0%)</td>
+<td class="gt_row gt_center" headers="stat_35">0 (0%)</td>
+</tr>
+</tbody><tfoot class="gt_footnotes">
+<tr class="odd">
+<td colspan="36" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Median (Q1, Q3); n (%)</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+</div>
+</div>
+<p>#<code>{r} #trips_tbl_sum &lt;- waste_gt |&gt; #    filter(!is.na(generation_kg_capita))  |&gt; #    group_by(income_cat) |&gt; #    summarise( #        count = n(), #        mean = mean(generation_kg_capita), #        sd = sd(generation_kg_capita), #        median = median(generation_kg_capita), #        min = min(generation_kg_capita), #        max = max(generation_kg_capita) #    ) #</code></p>
+<p>than generate the summary table:</p>
+<p>#<code>{r} #waste_tbl_income |&gt; #    gt() |&gt; #    tab_header(title = "Waste generation per capita (kg/year) by income group", #               subtitle = "Data from 326 cities") |&gt; #    fmt_number(columns = count:max, decimals = 0) |&gt; #    cols_label(income_cat = "income category") #</code></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># trips_tbl_sum &lt;- trips_raw |&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colSums</span>(<span class="sc">!</span><span class="fu">is.na</span>(trucks_raw))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>numberplate      volume 
+          4           4 </code></pre>
+</div>
 </div>
 </section>
 </section>
-</section>
-<section id="results" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Results</h1>
+<section id="methods-generate-dataframe-for-analysis" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> METHODS: Generate Dataframe for analysis</h1>
+<!---
+Since the Mermaid plugin only seems to work on the highest chapter level this chapter is added as first heading.
+-->
+<p>First the raw data is stored into the folder. This allows to make a versatile setup where cleaning steps can be incorporated into the used dataset when deemed necessary when analysis the results. After saving the individual tables these will be linked according a ‘star’ schema based on the <span class="citation" data-cites="kimball_data_2013">(<a href="#ref-kimball_data_2013" role="doc-biblioref">Kimball and Ross 2013</a>)</span>. For the analysis the trips data is used as the fact table and the trucks and dim_date tables are linked as dimension tables over which the set can be grouped and filtered.</p>
+<p>Generate a date dimension table and dimension time table in <strong>?@fig-df_star_schema</strong></p>
 <div class="cell" data-layout-align="default">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>erDiagram</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  CUSTOMER ||--o{ ORDER : places</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  ORDER ||--|{ ORDER_ITEM : contains</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  PRODUCT ||--o{ ORDER_ITEM : includes</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  CUSTOMER {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    string name</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    string email</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  ORDER {</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    date orderDate</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    string status</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  PRODUCT {</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    string name</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    float price</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  ORDER_ITEM {</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    int quantity</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    float price</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>#| label: fig-df_star_schema</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>#| fig-cap: "Star schema of data frame"</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>erDiagram</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    trips  }o--o| trucks  : numberplate</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    trips }o--o| dim_date : date</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    trucks {</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        id numberplate  </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        integer volume</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    trips {</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        id fid</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        string numberplate</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        date date</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        time time</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        float lat</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        float lon</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        string plant</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    dim_date {</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        date date</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>        integer day</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>        string day_suffix</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        integer week_day</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>        string week_day_name</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>        string week_day_name-short</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>        string week_dayname_first-letter</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>        integer day_of_year</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>        integer week_of_month</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>        integer week_of_year</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>        integer month</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>        string month_name</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>        string month_name_Short</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>        string month_name_first-letter</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>        integer quarter</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>        string quarter_name</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>        integer year</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>        integer yyyymm</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>        string year_month</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>        binary is_weekend</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>        date first_date-of-month</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>        date last_date-of-month</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>        date first_date-of-week</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>        date last_date-of-week</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>        string year_week</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">erDiagram
-  CUSTOMER ||--o{ ORDER : places
-  ORDER ||--|{ ORDER_ITEM : contains
-  PRODUCT ||--o{ ORDER_ITEM : includes
-  CUSTOMER {
-    string id
-    string name
-    string email
-  }
-  ORDER {
-    string id
-    date orderDate
-    string status
-  }
-  PRODUCT {
-    string id
-    string name
-    float price
-  }
-  ORDER_ITEM {
-    int quantity
-    float price
-  }
+<pre class="mermaid mermaid-js">#| label: fig-df_star_schema
+#| fig-cap: "Star schema of data frame"
+erDiagram
+    trips  }o--o| trucks  : numberplate
+    trips }o--o| dim_date : date
+    trucks {
+        id numberplate  
+        integer volume
+
+    }
+    trips {
+        id fid
+        string numberplate
+        date date
+        time time
+        float lat
+        float lon
+        string plant
+    }
+    dim_date {
+        date date
+        integer day
+        string day_suffix
+        integer week_day
+        string week_day_name
+        string week_day_name-short
+        string week_dayname_first-letter
+        integer day_of_year
+        integer week_of_month
+        integer week_of_year
+        integer month
+        string month_name
+        string month_name_Short
+        string month_name_first-letter
+        integer quarter
+        string quarter_name
+        integer year
+        integer yyyymm
+        string year_month
+        binary is_weekend
+        date first_date-of-month
+        date last_date-of-month
+        date first_date-of-week
+        date last_date-of-week
+        string year_week
+    }
 </pre>
 </div>
 <p></p></figure><p></p>
 </div>
 </div>
 </div>
-<section id="organise-data-for-analysis" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="organise-data-for-analysis"><span class="header-section-number">3.1</span> Organise data for analysis</h2>
-<p>In order to analyse the data additional <span class="citation" data-cites="kimball_data_2013">(<a href="#ref-kimball_data_2013" role="doc-biblioref">Kimball and Ross 2013</a>)</span></p>
-<p>Generate a date dimension table and dimension time table in <span class="citation" data-cites="df_star-schema">(<a href="#ref-df_star-schema" role="doc-biblioref"><strong>df_star-schema?</strong></a>)</span></p>
-<div class="cell" data-layout-align="default">
+<section id="write-data-into-folder-with-cleaned-data" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="write-data-into-folder-with-cleaned-data"><span class="header-section-number">3.1</span> Write data into folder with cleaned data</h2>
+<section id="trips" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="trips"><span class="header-section-number">3.1.1</span> trips</h3>
+<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>#| label: df_star-schema</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>#| fig: Start schema for final datafram</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  A[Hard edge] --&gt; B(Round edge)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  B --&gt; C{Decision}</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  C --&gt; D[Result one]</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  C --&gt; E[Result two]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>trips_raw <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/processed/trips.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">#| label: df_star-schema
-#| fig: Start schema for final datafram
-flowchart LR
-  A[Hard edge] --&gt; B(Round edge)
-  B --&gt; C{Decision}
-  C --&gt; D[Result one]
-  C --&gt; E[Result two]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="default">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  A[Hard edge] --&gt; B(Round edge)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  B --&gt; C{Decision}</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  C --&gt; D[Result one]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  C --&gt; E[Result two]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-  A[Hard edge] --&gt; B(Round edge)
-  B --&gt; C{Decision}
-  C --&gt; D[Result one]
-  C --&gt; E[Result two]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p>test tex and such</p>
-<div class="cell" data-layout-align="default">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>erDiagram</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  CUSTOMER ||--o{ ORDER : places</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  ORDER ||--|{ ORDER_ITEM : contains</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  PRODUCT ||--o{ ORDER_ITEM : includes</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  CUSTOMER {</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    string name</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    string email</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  ORDER {</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    date orderDate</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    string status</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  PRODUCT {</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    string id</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    string name</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    float price</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  ORDER_ITEM {</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    int quantity</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    float price</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">erDiagram
-  CUSTOMER ||--o{ ORDER : places
-  ORDER ||--|{ ORDER_ITEM : contains
-  PRODUCT ||--o{ ORDER_ITEM : includes
-  CUSTOMER {
-    string id
-    string name
-    string email
-  }
-  ORDER {
-    string id
-    date orderDate
-    string status
-  }
-  PRODUCT {
-    string id
-    string name
-    float price
-  }
-  ORDER_ITEM {
-    int quantity
-    float price
-  }
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
 </div>
 </section>
-<section id="explore-data" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="explore-data"><span class="header-section-number">3.2</span> Explore data</h2>
-<p>summarise tables map</p>
+<section id="trucks" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="trucks"><span class="header-section-number">3.1.2</span> trucks</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>trucks_raw <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/processed/trucks.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Since the dim_date is generated for this specific reporting purpose it is directly put in the processed folder. This is because no cleaning steps are required and the data is directly usable. # Results Visuals: map location with color on location</p>
+<p>column graph with day of delivery</p>
+</section>
 </section>
 </section>
 <section id="conclusions" class="level1" data-number="4">

@@ -31,10 +31,9 @@ license: "CC BY"
 
 The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal of this dataset is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience
 
-# Methods
+# METHODS: explore the raw data
 
 ## Import libraries
-
 First the required libraries need to be imported to be able to read and process the datasets.
 
 ```{r libraries, message = FALSE}
@@ -43,6 +42,7 @@ library(dplyr)
 library(ggplot2)
 library(gt)
 library(here)
+library(gtsummary)
 ```
 
 ## Import trips data from 'fslogisticskampala'
@@ -72,7 +72,7 @@ The second dataset to import is the trucks data as published in the website. Rea
 
 ```{r}
 #| message = FALSE 
-trucks <- read_csv(here::here("data/raw/trucks.csv")) |>
+trucks_raw <- read_csv(here::here("data/raw/trucks.csv")) |>
   head(4)
   
 ```
@@ -80,6 +80,7 @@ trucks <- read_csv(here::here("data/raw/trucks.csv")) |>
 @tbl-trucks-dictionary shows the dictionary of the trucks set. This is a more simpel table containing meta data on the truck. It only contains 2 variables. The first is the 'numberplate' which can function as key to link to the trips dataset and the second variable is the volume of the specific truck in m3.
 ```{r}
 #| label: tbl-trucks-dictionary
+#| tbl-cap: "Dictionary for trucks table"
 #| message: FALSE 
 read_csv(here::here("data/trucks_dictionary.csv")) |>
 gt()
@@ -89,139 +90,127 @@ gt()
 In order to aid analysis a additional table is generated and imported. This table has a daily geranuality and contains time intelligence information for the data collection period. 
 
 ## Checking data integrity
-
-trips summary check
+In order to understand the data we will first asses the raw data. First we will count all non NA values for each column (see @tbl-count-trips. In total 5663 records are in the dataset and it can be seen each column has no NA values. 
 
 ```{r}
-waste_tbl_income <- waste_gt |>
-    filter(!is.na(generation_kg_capita))  |>
-    group_by(income_cat) |>
-    summarise(
-        count = n(),
-        mean = mean(generation_kg_capita),
-        sd = sd(generation_kg_capita),
-        median = median(generation_kg_capita),
-        min = min(generation_kg_capita),
-        max = max(generation_kg_capita)
-    )
+#| label: tbl-count-trips
+#| tbl-cap: "Count of "
+# trips_tbl_sum <- trips_raw |>
+  colSums(!is.na(trips_raw))
 ```
+
+```{r}
+trips_raw |> tbl_summary(numberplate)
+```
+
+#```{r}
+#trips_tbl_sum <- waste_gt |>
+#    filter(!is.na(generation_kg_capita))  |>
+#    group_by(income_cat) |>
+#    summarise(
+#        count = n(),
+#        mean = mean(generation_kg_capita),
+#        sd = sd(generation_kg_capita),
+#        median = median(generation_kg_capita),
+#        min = min(generation_kg_capita),
+#        max = max(generation_kg_capita)
+#    )
+#```
 
 than generate the summary table:
 
+#```{r}
+#waste_tbl_income |>
+#    gt() |>
+#    tab_header(title = "Waste generation per capita (kg/year) by income group",
+#               subtitle = "Data from 326 cities") |>
+#    fmt_number(columns = count:max, decimals = 0) |>
+#    cols_label(income_cat = "income category")
+#```
+
 ```{r}
-waste_tbl_income |>
-    gt() |>
-    tab_header(title = "Waste generation per capita (kg/year) by income group",
-               subtitle = "Data from 326 cities") |>
-    fmt_number(columns = count:max, decimals = 0) |>
-    cols_label(income_cat = "income category")
+# trips_tbl_sum <- trips_raw |>
+  colSums(!is.na(trucks_raw))
 ```
 
+# METHODS: Generate Dataframe for analysis
+<!---
+Since the Mermaid plugin only seems to work on the highest chapter level this chapter is added as first heading.
+-->
+First the raw data is stored into the folder. This allows to make a versatile setup where cleaning steps can be incorporated into the used dataset when deemed necessary when analysis the results.
+After saving the individual tables these will be linked according a 'star' schema based on the [@kimball_data_2013]. For the analysis the trips data is used as the fact table and the trucks and dim_date tables are linked as dimension tables over which the set can be grouped and filtered.
+
+Generate a date dimension table and dimension time table in @fig-df_star_schema 
 
 
- In order to understand the data first we will check the raw data.
+```{mermaid}
+#| label: fig-df_star_schema
+#| fig-cap: "Star schema of data frame"
+erDiagram
+    trips  }o--o| trucks  : numberplate
+    trips }o--o| dim_date : date
+    trucks {
+        id numberplate	
+        integer volume
 
-## Organize data show data pipeline
+    }
+    trips {
+        id fid
+        string numberplate
+        date date
+        time time
+        float lat
+        float lon
+        string plant
+    }
+    dim_date {
+        date date
+        integer day
+        string day_suffix
+        integer week_day
+        string week_day_name
+        string week_day_name-short
+        string week_dayname_first-letter
+        integer day_of_year
+        integer week_of_month
+        integer week_of_year
+        integer month
+        string month_name
+        string month_name_Short
+        string month_name_first-letter
+        integer quarter
+        string quarter_name
+        integer year
+        integer yyyymm
+        string year_month
+        binary is_weekend
+        date first_date-of-month
+        date last_date-of-month
+        date first_date-of-week
+        date last_date-of-week
+        string year_week
+    }
+```
 
-Cleaning steps
+## Write data into folder with cleaned data
 
-### Write data into folder with cleaned data
-
-trips
+### trips
 
 ```{r}
 trips_raw |>
   write_csv(here::here("data/processed/trips.csv"))
 ```
-
+### trucks
 ```{r}
 trucks_raw |>
   write_csv(here::here("data/processed/trucks.csv"))
 ```
-
+Since the dim_date is generated for this specific reporting purpose it is directly put in the processed folder. This is because no cleaning steps are required and the data is directly usable.
 # Results
+Visuals:
+map location with color on location
 
-```{mermaid}
-erDiagram
-  CUSTOMER ||--o{ ORDER : places
-  ORDER ||--|{ ORDER_ITEM : contains
-  PRODUCT ||--o{ ORDER_ITEM : includes
-  CUSTOMER {
-    string id
-    string name
-    string email
-  }
-  ORDER {
-    string id
-    date orderDate
-    string status
-  }
-  PRODUCT {
-    string id
-    string name
-    float price
-  }
-  ORDER_ITEM {
-    int quantity
-    float price
-  }
-```
-
-## Organise data for analysis
-
-In order to analyse the data additional [@kimball_data_2013]
-
-Generate a date dimension table and dimension time table in @df_star-schema
-
-```{mermaid}
-#| label: df_star-schema
-#| fig: Start schema for final datafram
-flowchart LR
-  A[Hard edge] --> B(Round edge)
-  B --> C{Decision}
-  C --> D[Result one]
-  C --> E[Result two]
-```
-
-```{mermaid}
-flowchart LR
-  A[Hard edge] --> B(Round edge)
-  B --> C{Decision}
-  C --> D[Result one]
-  C --> E[Result two]
-```
-
-test tex and such
-
-```{mermaid}
-erDiagram
-  CUSTOMER ||--o{ ORDER : places
-  ORDER ||--|{ ORDER_ITEM : contains
-  PRODUCT ||--o{ ORDER_ITEM : includes
-  CUSTOMER {
-    string id
-    string name
-    string email
-  }
-  ORDER {
-    string id
-    date orderDate
-    string status
-  }
-  PRODUCT {
-    string id
-    string name
-    float price
-  }
-  ORDER_ITEM {
-    int quantity
-    float price
-  }
-```
-
-## Explore data
-
-summarise tables map
+column graph with day of delivery
 
 # Conclusions
 
