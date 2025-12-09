@@ -235,9 +235,43 @@ df <- trips |>
 
 # Results
 Visuals:
-map location with color on location
+@fig-distribution-size shows the distribution of truck sizes.
+[] Truck sizing
+```{r}
+#| label: fig-distribution-size
+#| fig-cap: "Distribution of truck sizes"
+df |>
+ggplot(aes(y = numberplate,
+           x = volume
+           )) +
+  geom_point()
+```
 
-column graph with day of delivery
+mixes?
+#```{r}
+#df |>
+#ggplot(aes(x = 
+#             y = ))+
+#  geom_bar()
+#```
+Does size matter?
+
+
+[] map location with color on location
+```{r}
+ggplot(df, aes(lon, lat)) + 
+  geom_point(size = .25, show.legend = FALSE) +
+  coord_quickmap()
+```
+#todo this list for proper mapping: https://ggplot2-book.org/maps.html or rather use leaflet: https://stackoverflow.com/questions/23130604/plot-coordinates-on-map
+
+Does it look like they are closer
+[] column graph with day of delivery
+- Time
+[] time of delivery
+[] does time affect dislodge location
+
+
 
 # Conclusions
 
