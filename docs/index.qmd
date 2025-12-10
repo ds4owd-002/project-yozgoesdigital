@@ -44,6 +44,7 @@ library(gt)
 library(here)
 library(gtsummary)
 library(lubridate)
+library(leaflet)
 ```
 
 ## Import trips data from 'fslogisticskampala'
@@ -247,6 +248,7 @@ ggplot(aes(y = numberplate,
   geom_point()
 ```
 
+
 mixes?
 #```{r}
 #df |>
@@ -264,6 +266,24 @@ ggplot(df, aes(lon, lat)) +
   coord_quickmap()
 ```
 #todo this list for proper mapping: https://ggplot2-book.org/maps.html or rather use leaflet: https://stackoverflow.com/questions/23130604/plot-coordinates-on-map
+
+```{r}
+
+#| label: fig-map_collection_locations
+#| fig-cap: "Map with collection locations and the existing treatment plants"
+m = leaflet(data = df) |>
+   addTiles() |>
+   addCircleMarkers(~lon, ~lat 
+                    ,popup = ~as.character(plant)
+                    , color = ~ifelse(plant == "Bugolobi" , "red", "blue")
+                    , radius = 0.5
+                    ) |>
+  addMarkers(lng = ~c(32.6071673,32.5458844)
+             ,lat = ~c(0.3190139,0.3472747)
+             ,popup = ~c("Bugolobi","Lubigi")
+             )
+m
+```
 
 Does it look like they are closer
 [] column graph with day of delivery
