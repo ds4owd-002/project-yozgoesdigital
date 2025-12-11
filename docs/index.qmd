@@ -31,9 +31,10 @@ license: "CC BY"
 
 The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal of this dataset is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience
 
-# METHODS: explore the raw data
+# METHODS
 
 ## Import libraries
+
 First the required libraries need to be imported to be able to read and process the datasets.
 
 ```{r libraries, message = FALSE}
@@ -49,24 +50,27 @@ library(leaflet)
 
 ## Import trips data from 'fslogisticskampala'
 
-The original set has 2 tables @lars_schobitz_fslogisticskampala_2024. One set contains information of trips of faecal sludge collection trucks and the second table with metadata on of the trucks. First we start with opening the trips.csv and save it as trips_raw: 
+The original set has 2 tables @lars_schobitz_fslogisticskampala_2024. One set contains information of trips of faecal sludge collection trucks and the second table with metadata on of the trucks. First we start with opening the trips.csv and save it as trips_raw:
+
 ```{r read_trips}
 #| message = FALSE 
 trips_raw <- read_csv(here::here("data/raw/trips.csv"))
 ```
 
-@tbl-trips-dictionary shows the dictionary of the trips dataset. 
+@tbl-trips-dictionary shows the dictionary of the trips dataset.
 
 ```{r}
 #| label: tbl-trips-dictionary
 #| tbl-cap: "Dictionary for trips table"
 #| message: FALSE 
-read_csv(here::here("data/trips_dictionary.csv")) |>
+read_csv(here::here("data/processed/trips_dictionary.csv")) |>
     gt()
 ```
-From the dictionary it can be seen the trips data has information about the each recorded trip. Where the 'numberplate'column can be used as the foreign key to link to the truck dataset as described below.
+
+From the dictionary it can be seen the trips data has information about the each recorded trip. Where the 'numberplate' column can be used as the foreign key to link to the truck dataset as described below.
 
 ## Import trucks data from 'fslogisticskampala'
+
 The second dataset to import is the trucks data as published in the website. Read trucks.csv and save as trucks_raw
 
 ```{r}
@@ -75,19 +79,22 @@ trucks_raw <- read_csv(here::here("data/raw/trucks.csv"))
 ```
 
 @tbl-trucks-dictionary shows the dictionary of the trucks set. This is a more simple table containing meta data on the truck. It only contains 2 variables. The first is the 'numberplate' which can function as key to link to the trips dataset and the second variable is the volume of the specific truck in m3.
+
 ```{r}
 #| label: tbl-trucks-dictionary
 #| tbl-cap: "Dictionary for trucks table"
 #| message: FALSE 
-read_csv(here::here("data/trucks_dictionary.csv")) |>
+read_csv(here::here("data/processed/trucks_dictionary.csv")) |>
 gt()
 ```
 
 ## Import dim_date
-In order to aid analysis a additional table is generated and imported. This table has a daily granularity and contains time intelligence information for the data collection period. 
+
+In order to aid analysis a additional table is generated and imported. This table has a daily granularity and contains time intelligence information for the data collection period.
 
 ## Checking data integrity
-In order to understand the data we will first asses the raw data. First we will count all non NA values for each column (see @tbl-count-trips. In total 5663 records are in the dataset and it can be seen each column has no NA values. 
+
+In order to understand the data we will first asses the raw data. First we will count all non NA values for each column (see @tbl-count-trips. In total 5663 records are in the dataset and it can be seen each column has no NA values.
 
 ```{r}
 #| label: tbl-count-trips
@@ -97,37 +104,16 @@ In order to understand the data we will first asses the raw data. First we will 
 ```
 
 ```{r}
+#| message: FALSE
 #| label: fig-count_of_delivery_per_truck
 #| fig-cap: "Count of recorded trips per truck"
 trips_raw |> tbl_summary(include = numberplate)
 ```
 
-#```{r}
-#trips_tbl_sum <- waste_gt |>
-#    filter(!is.na(generation_kg_capita))  |>
-#    group_by(income_cat) |>
-#    summarise(
-#        count = n(),
-#        mean = mean(generation_kg_capita),
-#        sd = sd(generation_kg_capita),
-#        median = median(generation_kg_capita),
-#        min = min(generation_kg_capita),
-#        max = max(generation_kg_capita)
-#    )
-#```
 
-than generate the summary table:
-
-#```{r}
-#waste_tbl_income |>
-#    gt() |>
-#    tab_header(title = "Waste generation per capita (kg/year) by income group",
-#               subtitle = "Data from 326 cities") |>
-#    fmt_number(columns = count:max, decimals = 0) |>
-#    cols_label(income_cat = "income category")
-#```
 
 The trucks data can be used as dimension table for the trips data to retrieve meta data from the trucks. In this case only the volume. In total 35 trucks are registered and each has a reported volume as an attribute:
+
 ```{r}
   colSums(!is.na(trucks_raw))
 ```
@@ -135,32 +121,43 @@ The trucks data can be used as dimension table for the trips data to retrieve me
 ## Write data into folder with cleaned data
 
 ### trips
+
 Write the cleaned trips data/processed data as csv after cleaning.
+
 ```{r}
 trips <-  trips_raw |>
   mutate(numberplate = as.character(numberplate)) |>
   write_csv(here::here("data/processed/trips.csv"))
 ```
+
 ### trucks
+The raw table is read and with the nessescary steps cleaned and stored as trucks for further analysis.
 ```{r}
 trucks <- trucks_raw |>
   mutate(numberplate = as.character(numberplate)) |>
+  mutate(size_cat = case_when(
+           volume < 8 ~"small",
+           volume < 12 ~"medium",
+           volume < 40 ~"large",
+           volume < 999 ~"HUGE!",
+           TRUE ~ "unkown"
+           ))|>
   write_csv(here::here("data/processed/trucks.csv"))
 ```
+
 ### dim_date and dim_time
+
 Since the dim_date and dim_time are generated for this specific reporting purpose it is directly put in the processed folder. This can be done as no additional cleaning steps are required. After reading the document the dataframes need to be generated so they can easily be references in the code.
+
 ```{r}
 #| message: FALSE 
 dim_date <- read_csv(here::here("data/processed/dim_date.csv"))
 dim_time <- read_csv(here::here("data/processed/dim_time.csv"))
 ```
 
-# METHODS: Generate Dataframe for analysis
-<!---
-Since the Mermaid plugin only seems to work on the highest chapter level this chapter is added as first heading.
--->
-First the raw data is stored into the folder. This allows to make a versatile setup where cleaning steps can be incorporated into the used dataset when deemed necessary when analysis the results.
-After saving the individual tables these will be linked according a 'star' schema based on the [@kimball_data_2013]. For the analysis the trips data is used as the fact table and the trucks and dim_date tables are linked as dimension tables over which the set can be grouped and filtered. @fig-df_star_schema shows the schematic of the start schema.
+### Generate Dataframe for analysis
+
+First the raw data is stored into the data/processed folder. This allows to make a versatile setup where cleaning steps can be incorporated into the used dataset when deemed necessary when analysis the results. After saving the individual tables these will be linked according a 'star' schema based on the [@kimball_data_2013]. For the analysis the trips data is used as the fact table and the trucks and dim_date tables are linked as dimension tables over which the set can be grouped and filtered. @fig-df_star_schema shows the schematic of the start schema.
 
 ```{mermaid}
 %%| label: fig-df_star_schema
@@ -172,6 +169,7 @@ erDiagram
     trucks {
         id numberplate	
         integer volume
+        string size_cat
     }
     trips {
         id fid
@@ -225,7 +223,7 @@ erDiagram
     
 ```
 
-In order generate the star schema the code below can be executed. This code will basically do a left_join for of each dimension table to the trips fact table. This generates a big table with 44 variables and 5653 tuples (or rows). 
+In order generate the star schema the code below can be executed. This code will basically do a left_join for of each dimension table to the trips fact table. This generates a big table with 45 variables and 5653 tuples (or rows).
 
 ```{r}
 df <- trips |>
@@ -235,43 +233,82 @@ df <- trips |>
 ```
 
 # Results
-Visuals:
-@fig-distribution-size shows the distribution of truck sizes.
-[] Truck sizing
+This chapter will dive into the results of the dataset. The first visual (@fig-map_collection_locations) shows the collections locations and the 2 treatment sites.
+
+The registered trucks have variable volumes. @fig-distribution-size shows the distribution volumes of registered trucks.
+
 ```{r}
 #| label: fig-distribution-size
 #| fig-cap: "Distribution of truck sizes"
+
+size_cat_order <- c("small","medium","large","HUGE!")
+
 df |>
+  mutate(size_cat = factor(size_cat, levels = size_cat_order))|>
 ggplot(aes(y = numberplate,
-           x = volume
+           x = volume,
+           color = size_cat
            )) +
-  geom_point()
+  geom_point(shape = 4, size = 1, stroke = 2)+
+  labs(
+    title = "Truck Volume Distribution",
+    subtitle = "Plot of all vehicles sizes, with colors showing size category",
+    x = "Registered Trucks",
+    y = "Volume (m3)",
+    color = "Size Category"
+  )
+```
+Looking at the distribution a large variance can be observed, but also different clusters of sizes can be distinguished. By grouping on typical sizes it can be expected different types transport are linked. For examples of different sizes also refer to @linda_strande_faecal_2014. To summarise the results @fig-distribution-size-bp shows the results in a boxplot and @tbl-trucksize_summary shows some of the statistics.
+```{r}
+#| label: fig-distribution-size-bp
+#| fig-cap: "Distribution of truck sizes visualized in a boxplot"
+df |>
+  ggplot(aes(y = volume,
+             x= ''
+             )) +
+  geom_boxplot()+
+  geom_point(aes(color = size_cat))+
+  labs(
+    title = "Truck Volume Distribution in a Boxplot",
+    subtitle = "Boxplot of all vehicles, with colors showing size category",
+    x = "Registered Trucks",
+    y = "Volume (m3)",
+    color = "Size Category"
+  )
 ```
 
 
-mixes?
-#```{r}
-#df |>
-#ggplot(aes(x = 
-#             y = ))+
-#  geom_bar()
-#```
-Does size matter?
-
-
-[] map location with color on location
 ```{r}
-ggplot(df, aes(lon, lat)) + 
-  geom_point(size = .25, show.legend = FALSE) +
-  coord_quickmap()
+#| label: tbl-trucksize_summary
+#| tbl-cap: "Summary table of truck sizes, by size category"
+trucks |>
+  mutate(size_cat = factor(size_cat, levels = size_cat_order))|>
+group_by(size_cat) |>
+summarise(count = n(), 
+          mean = round(mean(volume),1), 
+          median = median(volume), 
+          min = min(volume), 
+          max = max(volume),
+          sd = round(sd(volume),1)
+          )|>
+        gt()|>
+  tab_header(
+    title = "Summary table of truck sizes, by size category")|>
+  tab_options(
+    table.width = pct(80),
+    table.align = "center",
+    heading.align = "center",
+    table.border.top.width = px(2),
+    table.border.top.color = "black",
+    table.border.bottom.width = px(2),
+    table.border.bottom.color = "black"
+  )
 ```
-#todo this list for proper mapping: https://ggplot2-book.org/maps.html or rather use leaflet: https://stackoverflow.com/questions/23130604/plot-coordinates-on-map
 
 ```{r}
-
 #| label: fig-map_collection_locations
 #| fig-cap: "Map with collection locations and the existing treatment plants"
-m = leaflet(data = df) |>
+map = leaflet(data = df) |>
    addTiles() |>
    addCircleMarkers(~lon, ~lat 
                     ,popup = ~as.character(plant)
@@ -280,20 +317,16 @@ m = leaflet(data = df) |>
                     ) |>
   addMarkers(lng = ~c(32.6071673,32.5458844)
              ,lat = ~c(0.3190139,0.3472747)
-             ,popup = ~c("Bugolobi","Lubigi")
+             ,popup = ~c("Bugolobi FS treatment plant","Lubigi FS treatment plant")
              )
-m
+map
 ```
 
-Does it look like they are closer
-[] column graph with day of delivery
-- Time
-[] time of delivery
-[] does time affect dislodge location
-
-
+- Time \[\] time of delivery \[\] does time affect dislodge location
 
 # Conclusions
+- The dataset contains a high variable set of faecal sludge collection trucks. Most of the smaller more versatile trucks. 4 registered trucks have volumes larger than 60m3 which are rarely seen in such settings. It could even be wondered if these volumes are correct or if a mistake in units is made.
+- The collection location and the dislodge location seem to have a correlation, but based on the spread it is not the only factor on which location the trucks will dislodge
 
 # References
 
@@ -307,6 +340,4 @@ The original dataset on faecal sludge logistics was published under [CC-BY](http
 # Ideas/actions
 
 -   \[\] day and night time (dim time)
--   \[\] plot on a map
--   \[\] check for NA values etc
 -   \[\] [requirements](https://ds4owd-002.github.io/website/content/project/#tbl-required-items)
