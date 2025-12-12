@@ -1,8 +1,0 @@
----
-title: "dictionary"
-output: html_document
----
-
-#todo add raw data structure/tree
-
-trucks \| variable \| description \| \| --- \| --- \| \| license plate \| registration number on the truck \|
