@@ -15,7 +15,7 @@ crossref:
   chapters: true
 bibliography: references.bib
 execute: 
-  echo: true #remove false before submitting as the requirements dictate to add the code to the report
+  echo: true # remove false before submitting as the requirements dictate to add the code to the report
   warning: true
 license: "CC BY"
 #csl: apa.csl # incase to use custom citation style
@@ -107,12 +107,16 @@ In order to understand the data we will first asses the raw data. First we will 
 #| message: FALSE
 #| label: fig-count_of_delivery_per_truck
 #| fig-cap: "Count of recorded trips per truck"
-trips_raw |> tbl_summary(include = numberplate)
+truck_dist <- trips_raw |>
+  count(numberplate, name = "n_entries") |>
+  arrange(desc(n_entries))|>
+  mutate("Percentage of entries" = round(n_entries / sum(n_entries) * 100,2))
+
+truck_dist
 ```
+Of the total 35 trucks the truck with the highest amount of entries is only accounting for 5.6% of the entries. So with the data set is spread out enough to represent the truck drivers in Kampala. The trips dataset can be used as a fact table when doing the analysis.
 
-
-
-The trucks data can be used as dimension table for the trips data to retrieve meta data from the trucks. In this case only the volume. In total 35 trucks are registered and each has a reported volume as an attribute:
+The second dataset called 'trucks' can be used as dimension table for the trips data to retrieve meta data from the trucks. In this case only the volume. In total 35 trucks are registered and each has a reported volume as an attribute:
 
 ```{r}
   colSums(!is.na(trucks_raw))
@@ -131,7 +135,7 @@ trips <-  trips_raw |>
 ```
 
 ### trucks
-The raw table is read and with the nessescary steps cleaned and stored as trucks for further analysis.
+The raw table is read and with the necessary steps cleaned and stored as trucks for further analysis.
 ```{r}
 trucks <- trucks_raw |>
   mutate(numberplate = as.character(numberplate)) |>
@@ -146,7 +150,6 @@ trucks <- trucks_raw |>
 ```
 
 ### dim_date and dim_time
-
 Since the dim_date and dim_time are generated for this specific reporting purpose it is directly put in the processed folder. This can be done as no additional cleaning steps are required. After reading the document the dataframes need to be generated so they can easily be references in the code.
 
 ```{r}
@@ -157,7 +160,7 @@ dim_time <- read_csv(here::here("data/processed/dim_time.csv"))
 
 ### Generate Dataframe for analysis
 
-First the raw data is stored into the data/processed folder. This allows to make a versatile setup where cleaning steps can be incorporated into the used dataset when deemed necessary when analysis the results. After saving the individual tables these will be linked according a 'star' schema based on the [@kimball_data_2013]. For the analysis the trips data is used as the fact table and the trucks and dim_date tables are linked as dimension tables over which the set can be grouped and filtered. @fig-df_star_schema shows the schematic of the start schema.
+First each cleaned dataset is stored into the folder 'data/processed folder'. This allows to make a versatile setup where cleaning steps can be incorporated into the used dataset when deemed necessary when analysis the results. After saving the individual tables these will be linked according a 'star' schema based on @kimball_data_2013. For the analysis the trips data is used as the fact table and the trucks and dim_date tables are linked as dimension tables over which the set can be grouped and filtered. @fig-df_star_schema shows the schematic of the star schema.
 
 ```{mermaid}
 %%| label: fig-df_star_schema
@@ -223,7 +226,7 @@ erDiagram
     
 ```
 
-In order generate the star schema the code below can be executed. This code will basically do a left_join for of each dimension table to the trips fact table. This generates a big table with 45 variables and 5653 tuples (or rows).
+In order generate the star schema the code below can be executed. This code will basically do a left join for of each dimension table to the trips fact table. This generates a big table with 45 variables and 5653 tuples (or rows).
 
 ```{r}
 df <- trips |>
@@ -258,7 +261,7 @@ ggplot(aes(y = numberplate,
     color = "Size Category"
   )
 ```
-Looking at the distribution a large variance can be observed, but also different clusters of sizes can be distinguished. By grouping on typical sizes it can be expected different types transport are linked. For examples of different sizes also refer to @linda_strande_faecal_2014. To summarise the results @fig-distribution-size-bp shows the results in a boxplot and @tbl-trucksize_summary shows some of the statistics.
+Looking at the distribution a large variance can be observed, but also different clusters of sizes can be distinguished. By grouping on typical sizes it can be expected different types transport are linked. For examples of different sizes also refer to @linda_strande_faecal_2014. To summarise the results @fig-distribution-size-bp shows the results in a boxplot and @tbl-trucksize_summary shows statistics of the created groups.
 ```{r}
 #| label: fig-distribution-size-bp
 #| fig-cap: "Distribution of truck sizes visualized in a boxplot"
@@ -305,6 +308,7 @@ summarise(count = n(),
   )
 ```
 
+Apart from the collection location the trips dataset also states to which treatment plant the truck went for dislodging. One called Bugolobi and the other Lubigi. Where Lubigi is located at the Northern ring and Bugolobi at the southern part of the downtown. In order to see whether the distance from the one collection location and the treatment plant is correlated all collection points are mapped in fig-map_collection_locations and colours according the dislodging location. Also the locations of the treatment plants have been added as a reference.
 ```{r}
 #| label: fig-map_collection_locations
 #| fig-cap: "Map with collection locations and the existing treatment plants"
@@ -321,12 +325,49 @@ map = leaflet(data = df) |>
              )
 map
 ```
+Based on the collection location one can observe the collection location has some correlation to the dislodging location as collection at the south and east tend to more dislodged at Bugolobi and collections from the North and West tend to be dislodged at Lubigi. Altough some correlation can be observed the collection location is clearly not the only factor for deciding whether to dislodge  at a certain treatment plant. 
+```{r}
+#| label: fig-map_collection_locations_cat-size
+#| fig-cap: "Map with collection locations with color of truck size category"
+pal <- colorFactor(
+  palette = c("blue", "orange", "green", "red", "purple"),
+  domain  = df$size_cat
+)
 
-- Time \[\] time of delivery \[\] does time affect dislodge location
+map = leaflet(data = df) |>
+   addTiles() |>
+   addCircleMarkers(~lon, ~lat 
+                    , color = ~pal(size_cat)
+                    , radius = 0.5
+                    ) |>
+  addMarkers(lng = ~c(32.6071673,32.5458844)
+             ,lat = ~c(0.3190139,0.3472747)
+             ,popup = ~c("Bugolobi FS treatment plant","Lubigi FS treatment plant")
+             )
+map
+```
+
+```{r}
+#| label: fig-collection_time
+#| fig-cap: "Collection times per hour of the day"
+ggplot(df,aes(x=hour24,
+              fill = plant))+
+  geom_bar()+
+  labs(
+    title = "Count of collection per hour",
+    subtitle = "Count of collections, with colors showing plant at which the truck dislodged",
+    x = "Hour of the day",
+    y = "# of entries",
+    color = "Dislodging location"
+  )
+  
+```
+By counting timestamps and grouping them per hour of the day one can observe the time most collections are taking place (see @fig-collection_time). Clearly it can be see most activity take place during the day. It starts to get busy from 5:00 in the morning and getting to almost no activity after 18:00. It also looks like both plant are equally used for disloding over the whole day. So no correlation of collection time and disloding location can be observed.
 
 # Conclusions
 - The dataset contains a high variable set of faecal sludge collection trucks. Most of the smaller more versatile trucks. 4 registered trucks have volumes larger than 60m3 which are rarely seen in such settings. It could even be wondered if these volumes are correct or if a mistake in units is made.
 - The collection location and the dislodge location seem to have a correlation, but based on the spread it is not the only factor on which location the trucks will dislodge
+- The time of collection and the dislodging location do not seem to show any correlation and so does not seem to be a factor on the decusion where the plant truck is dislodging.
 
 # References
 
