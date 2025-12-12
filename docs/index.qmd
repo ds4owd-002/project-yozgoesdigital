@@ -31,7 +31,7 @@ license: "CC BY"
 
 The 'fslogisticskampala' data set is shared on [OpenWashdata](www.openwashdata.org) by Lars Shöbitz. The goal of this dataset is to provide data sources on faecal sludge transporting logistics in Kampala, Uganda. The data is collected from 30th March 2015 until 25th June 2015 and contains the collection location and dislodge location. By reading the shared dataset and the written report the writer felt it would be interesting to see if there is more information and trends present in the dataset which has not be exposed in the narrative. This dataset is chosen for the Data Science for OpenWashData course. And this specific dataset as it contains location data, in form of GPS coordinates, and multiple datasets which can be joined for the analysis. Additionally it also contains time series which is a common aspect in dataset and so useful for getting hands-on experience
 
-# METHODS
+# Methods
 
 ## Import libraries
 
@@ -346,7 +346,27 @@ map = leaflet(data = df) |>
              )
 map
 ```
+Since distance seems to be not the only factor to choose dislodging location, we can look further for other drivers. The first option is to check whether the week day has an effect.
+```{r}
+#| label: fig-collection_weekday
+#| fig-cap: "Count of Collections per day of the week"
 
+week_day_order <- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+
+df|>
+mutate(week_day_name = factor(week_day_name, levels = week_day_order))|>
+ggplot(aes(x= week_day_name, fill = plant))+
+  geom_bar()+
+   facet_wrap(~ plant, scales = "free_y", ncol = 1)+
+   labs(
+    title = "Collections per Weekday",
+    subtitle = "Counts of collection per day of the week",
+    x = "Day of Week",
+    y = "# of collections",
+    fill = "Plant"
+  )
+```
+@fig-collection_weekday plots the counts of collections per day of week. Secondary the colour in the graph indicates whether at which of the dislodging plants the sludge was dumped. For the Lubigi plant every day, also during weekends, seems constant. For the Bugolobi plant one can see that Thursdays seems to be the busiest followed two more quiet days on Friday and Saturday.
 ```{r}
 #| label: fig-collection_time
 #| fig-cap: "Collection times per hour of the day"
@@ -362,12 +382,58 @@ ggplot(df,aes(x=hour24,
   )
   
 ```
-By counting timestamps and grouping them per hour of the day one can observe the time most collections are taking place (see @fig-collection_time). Clearly it can be see most activity take place during the day. It starts to get busy from 5:00 in the morning and getting to almost no activity after 18:00. It also looks like both plant are equally used for disloding over the whole day. So no correlation of collection time and disloding location can be observed.
+By counting timestamps and grouping them per hour of the day one can observe the time most collections are taking place (see @fig-collection_time). Clearly it can be see most activity takes place during daytime and not at night. It starts to get busy from 5:00 in the morning and getting to almost no activity after 18:00. It also looks like both plant are equally used for dislodging over the whole day. So no correlation of collection time and dislodging location can be observed.
+
+```{r}
+#| label: fig-toplant_per_numberplate
+#| fig-cap: "Percentage of dislodges to each plant grouped by numberplate"
+df |>
+ggplot(aes(y = numberplate,
+            fill = plant,
+            position="fill"))+
+  scale_x_continuous(labels = scales::percent) +
+geom_bar(position = "fill")+
+  labs(title = "Percentage of dislodgings at each treatment plant grouped by numberplate")
+```
+@fig-toplant_per_numberplate seems to bring us closer to what factor is decisive on which plant a truck will dislodge. From the table above we can observe that all trucks just go to only 1 plant only. In order to proof this statement @tbl-count_single_double shows a count of trucks dislodging solely at 1 location and the number of trucks dislodging at 2 or more locations. From this table it can be confirmed that 15 and 20 trucks respectively are dislodging at Bugolobi or Lubigi and actually zero trucks are 'multi plant' trucks.
+ 
+```{r}
+#| label: tbl-count_single_double
+#| tbl-cap: "Table counting the number of trucks dislodging at each plant or multiple plants"
+plate_types <- df |>
+  mutate(
+    plant = str_squish(plant),
+    numberplate = str_squish(numberplate)
+  ) |>
+  distinct(numberplate, plant) |>
+  group_by(numberplate) |>
+  summarise(
+    n_plants = n_distinct(plant),
+    single_plant = if_else(n_plants == 1, first(plant), NA_character_),
+    .groups = "drop"
+  ) |>
+  mutate(group = if_else(n_plants == 1, single_plant, "multi plant")) |>
+  count(group, name = "count") |>
+  rename(`single or double` = group)
+
+plate_types |>
+  complete(`single or double` = c("Lubigi", "Bugolobi", "multi plant"),
+           fill = list(count = 0))|>
+    gt()
+```
+
+
 
 # Conclusions
 - The dataset contains a high variable set of faecal sludge collection trucks. Most of the smaller more versatile trucks. 4 registered trucks have volumes larger than 60m3 which are rarely seen in such settings. It could even be wondered if these volumes are correct or if a mistake in units is made.
 - The collection location and the dislodge location seem to have a correlation, but based on the spread it is not the only factor on which location the trucks will dislodge
-- The time of collection and the dislodging location do not seem to show any correlation and so does not seem to be a factor on the decusion where the plant truck is dislodging.
+- There seem to be a slightly lower number of collections dislodged at Bugolobi on Fridays and Saturdays, but dislodging seems to be taking place. It also appears not to be a significant driver on whether to supply to a specific treatment location.
+- The time of collection and the dislodging location do not seem to show any correlation and so does not seem to be a factor on the decision where the plant truck is dislodging.
+- From the data set it appears number plates only dislodge at 1 specific plant only. Likely this has to do with registration of the trucks.
+
+# Recommendations 
+- Due to the time period of data collection there seems to be not enough data points to test whether the day of the month has an effect on the amount collected and whether it a factor on which location dislodging is taking place.This could be research, but for that a much larger dataset over a longer period would be required.
+- To confirm the dislodging location is linked to registration it is recommended to check with the local authority e.g. like [KCCA](https://www.kcca.go.ug/) or [NWSC](https://www.nwsc.co.ug/) 
 
 # References
 
@@ -377,8 +443,3 @@ By counting timestamps and grouping them per hour of the day one can observe the
 # License
 
 The original dataset on faecal sludge logistics was published under [CC-BY](https://github.com/openwashdata/fslogisticskampala/blob/main/LICENSE.md) The results of this report are under presented here under similar license:
-
-# Ideas/actions
-
--   \[\] day and night time (dim time)
--   \[\] [requirements](https://ds4owd-002.github.io/website/content/project/#tbl-required-items)
