@@ -346,6 +346,7 @@ map = leaflet(data = df) |>
              )
 map
 ```
+Does size matter? In @fig-map_collection_locations_cat-size the collection points are mapped again but this time the colour is based on the size categories. Although it is hard conclude from the available data, but it seems the are not clear clusters of dots for the specific sizing. For real proof more demographic data is required.
 Since distance seems to be not the only factor to choose dislodging location, we can look further for other drivers. The first option is to check whether the week day has an effect.
 ```{r}
 #| label: fig-collection_weekday
