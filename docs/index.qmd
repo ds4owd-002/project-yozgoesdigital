@@ -98,7 +98,7 @@ In order to understand the data we will first asses the raw data. First we will 
 
 ```{r}
 #| label: tbl-count-trips
-#| tbl-cap: "Count of "
+#| tbl-cap: "Count of number of trips recorded "
 # trips_tbl_sum <- trips_raw |>
   colSums(!is.na(trips_raw))
 ```
