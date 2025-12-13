@@ -441,6 +441,12 @@ plate_types |>
 
 ::: {#refs}
 :::
+# Lessons learned
+This report was prepared as the capstone project for the Data Science for OpenWashData course. The primary objective of the project was to develop technical proficiency in the R programming language and to gain experience in the publication and communication of analytical results.
+
+During the course of the analysis, substantial effort was devoted to integrating multiple auxiliary data sources in order to explore trends in faecal sludge collection. Upon reflection, however, it became evident that the principal findings could already be derived from the initial dataset without the need for extensive data augmentation.
+
+A key lesson from this project is the importance of conducting a comprehensive exploratory and analytical assessment of the core dataset at an early stage. Such an approach enables researchers to identify whether additional data sources are genuinely required, thereby reducing unnecessary complexity and improving analytical efficiency. Future analyses would benefit from prioritizing early insight generation before expanding the scope of data integration.
 
 # License
 
