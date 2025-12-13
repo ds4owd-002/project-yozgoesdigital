@@ -430,7 +430,8 @@ plate_types |>
 - The collection location and the dislodge location seem to have a correlation, but based on the spread it is not the only factor on which location the trucks will dislodge
 - There seem to be a slightly lower number of collections dislodged at Bugolobi on Fridays and Saturdays, but dislodging seems to be taking place. It also appears not to be a significant driver on whether to supply to a specific treatment location.
 - The time of collection and the dislodging location do not seem to show any correlation and so does not seem to be a factor on the decision where the plant truck is dislodging.
-- From the data set it appears number plates only dislodge at 1 specific plant only. Likely this has to do with registration of the trucks.
+- From the dataset it appears number plates only dislodge at 1 specific plant only. Likely this has to do with registration of the trucks.
+- Based on this the author suspects the causality to rather to be the other way around than what was researched at @fig-map_collection_locations: It was already concluded there seems to be a correlation between the collection location and dislodging location. Instead of of the collection location affecting the dislodging location it is more likely there is causality on the trucks registered plant and where they are collection collecting their faecal sludge than the other way around.
 
 # Recommendations 
 - Due to the time period of data collection there seems to be not enough data points to test whether the day of the month has an effect on the amount collected and whether it a factor on which location dislodging is taking place.This could be research, but for that a much larger dataset over a longer period would be required.
