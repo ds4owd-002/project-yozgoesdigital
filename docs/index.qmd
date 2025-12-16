@@ -329,21 +329,44 @@ Based on the collection location one can observe the collection location has som
 ```{r}
 #| label: fig-map_collection_locations_cat-size
 #| fig-cap: "Map with collection locations with color of truck size category"
+#| fig-subcap: "This map is interactive. By hovering over the icon on the right top it allows the reader to make filters and select background maps"
 pal <- colorFactor(
   palette = c("blue", "orange", "green", "red", "purple"),
   domain  = df$size_cat
 )
 
-map = leaflet(data = df) |>
-   addTiles() |>
-   addCircleMarkers(~lon, ~lat 
-                    , color = ~pal(size_cat)
-                    , radius = 0.5
-                    ) |>
-  addMarkers(lng = ~c(32.6071673,32.5458844)
-             ,lat = ~c(0.3190139,0.3472747)
-             ,popup = ~c("Bugolobi FS treatment plant","Lubigi FS treatment plant")
-             )
+map <- leaflet() |>
+  addTiles(group = "OSM") |>
+  addProviderTiles(providers$Esri.WorldImagery, group = "Satellite")
+
+for (sc in unique(df$size_cat)) {
+  map <- map |>
+    addCircleMarkers(
+      data = df[df$size_cat == sc, ],
+      ~lon, ~lat,
+      fillColor   = pal(sc),
+      fillOpacity = 0.7,
+      stroke      = FALSE,
+      radius      = 3,
+      group       = sc
+    )
+}
+
+map <- map |>
+  addMarkers(
+    lng = c(32.6071673, 32.5458844),
+    lat = c(0.3190139, 0.3472747),
+    popup = c(
+      "Bugolobi FS treatment plant",
+      "Lubigi FS treatment plant"
+    ),
+    group = "Treatment plants"
+  ) |>
+  addLayersControl(
+    baseGroups    = c("OSM", "Satellite"),
+    overlayGroups = c(unique(df$size_cat), "Treatment plants"),
+    options       = layersControlOptions(collapsed = TRUE)
+  )
 map
 ```
 Does size matter? In @fig-map_collection_locations_cat-size the collection points are mapped again but this time the colour is based on the size categories. Although it is hard conclude from the available data, but it seems the are not clear clusters of dots for the specific sizing. For real proof more demographic data is required.
